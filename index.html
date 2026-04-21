@@ -1,0 +1,1901 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>CRICKET ASSISTANT</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tahoma&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      margin: 0;
+      background-image: url("bliss.jpg");
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Tahoma', 'MS Sans Serif', sans-serif;
+      font-size: 11px;
+      user-select: none;
+    }
+
+    /* ===== ESTILO WINDOWS XP AERO ===== */
+    .janela-xp {
+      border-radius: 8px 8px 4px 4px;
+      border: 1px solid #0a3794;
+      box-shadow:
+        0 0 0 1px #5b9bd5,
+        2px 2px 0 1px #0a3794,
+        4px 8px 20px rgba(0,0,0,0.6);
+      overflow: hidden;
+      background: #ece9d8;
+    }
+
+    .barra-titulo {
+      background:
+        linear-gradient(180deg,
+          #4d9de0 0%,
+          #1a6bbf 8%,
+          #1560b5 40%,
+          #1254a8 88%,
+          #0e3f8a 100%);
+      color: white;
+      padding: 4px 6px 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      min-height: 28px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+      letter-spacing: 0.2px;
+    }
+
+    .titulo-esquerda {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .titulo-icone { font-size: 14px; }
+
+    .titulo-botoes {
+      display: flex;
+      gap: 2px;
+      align-items: center;
+    }
+
+    .btn-titulo {
+      width: 21px;
+      height: 21px;
+      border-radius: 3px;
+      border: 1px solid rgba(255,255,255,0.4);
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      color: white;
+      text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    }
+
+    .btn-min {
+      background: linear-gradient(180deg, #6eb4f0 0%, #3d90d8 50%, #2878c0 100%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+    }
+    .btn-max {
+      background: linear-gradient(180deg, #6eb4f0 0%, #3d90d8 50%, #2878c0 100%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+    }
+    .btn-fechar-xp {
+      background: linear-gradient(180deg, #f07070 0%, #d42020 40%, #c00000 100%);
+      box-shadow: inset 0 1px 0 rgba(255,180,180,0.5);
+      border-color: #8b0000;
+      font-size: 11px;
+    }
+    .btn-titulo:hover { filter: brightness(1.15); }
+    .btn-titulo:active { filter: brightness(0.9); transform: scale(0.96); }
+
+    .menu-bar {
+      background: linear-gradient(180deg, #f0efe4 0%, #e8e7d8 100%);
+      padding: 2px 4px;
+      font-size: 11px;
+      border-bottom: 1px solid #aca899;
+      color: #000;
+      display: flex;
+      gap: 2px;
+    }
+    .menu-item {
+      padding: 2px 6px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .menu-item:hover { background: #0a246a; color: white; }
+
+    /* DESKTOP */
+    #desktop {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .icon {
+      width: 72px;
+      text-align: center;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      transition: background 0.1s;
+    }
+    .icon:hover {
+      background: rgba(0,60,180,0.3);
+      outline: 1px dashed rgba(255,255,255,0.6);
+    }
+    .icon:active { transform: scale(0.96); }
+
+    .icon-img-wrap {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+    }
+    .icon-img-wrap img { width: 48px; height: 48px; object-fit: contain; }
+
+    .icon span {
+      display: block;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      margin-top: 3px;
+      text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+      line-height: 1.3;
+    }
+    .icon.selecionado { background: rgba(0,60,180,0.4); outline: 1px dashed white; }
+
+    /* BLOCO DE NOTAS */
+    #janela {
+      position: absolute;
+      top: 80px;
+      left: 120px;
+      width: 340px;
+      z-index: 50;
+    }
+    #janela textarea {
+      width: 100%;
+      height: 180px;
+      border: none;
+      resize: none;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      padding: 6px;
+      background: white;
+      outline: none;
+      color: #000;
+    }
+    .hidden { display: none !important; }
+
+    /* OVERLAY GERAL */
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0,0,60,0.45);
+      z-index: 100;
+    }
+    .overlay.ativo { display: flex; animation: popIn 0.2s ease; }
+
+    /* GOOGLE */
+    #googleContainer { width: 540px; }
+    .google-body {
+      padding: 28px 36px 24px;
+      text-align: center;
+      background: white;
+    }
+    .google-logo {
+      font-size: 48px;
+      font-weight: 900;
+      font-family: Arial, sans-serif;
+      letter-spacing: -2px;
+      margin-bottom: 18px;
+      background: linear-gradient(90deg, #4285F4, #EA4335, #FBBC05, #34A853);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .google-search-row { display: flex; gap: 6px; justify-content: center; margin-bottom: 8px; }
+    #pesquisa {
+      width: 300px;
+      padding: 7px 14px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      font-size: 13px;
+      font-family: Arial, sans-serif;
+      outline: none;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+    #pesquisa:focus { border-color: #4285F4; box-shadow: 0 0 5px rgba(66,133,244,0.4); }
+    .google-dica { font-size: 11px; color: #888; margin-top: 6px; font-family: Arial, sans-serif; }
+
+    /* BOTÕES XP */
+    .btn-xp {
+      padding: 4px 16px;
+      font-family: 'Tahoma', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: 3px;
+      border: 1px solid #003c74;
+      background: linear-gradient(180deg, #f0f4fc 0%, #dce8f8 40%, #c0d8f4 70%, #b0cce8 100%);
+      color: #000;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 1px 2px rgba(0,0,0,0.2);
+      transition: filter 0.1s;
+      min-height: 23px;
+    }
+    .btn-xp:hover { background: linear-gradient(180deg, #e0eeff 0%, #c8dcf8 40%, #a8ccf0 70%, #98bce4 100%); }
+    .btn-xp:active { background: linear-gradient(180deg, #b0cce8 0%, #c0d8f4 100%); transform: scale(0.98); }
+
+    .btn-xp-verde {
+      padding: 4px 16px;
+      font-family: 'Tahoma', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: 3px;
+      border: 1px solid #2a6000;
+      background: linear-gradient(180deg, #c8f0a0 0%, #a8d870 40%, #80c040 70%, #60a820 100%);
+      color: #000;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 1px 2px rgba(0,0,0,0.2);
+      min-height: 23px;
+    }
+    .btn-xp-verde:hover { filter: brightness(1.1); }
+    .btn-xp-verde:active { transform: scale(0.98); }
+
+    /* SITE DO GRILO */
+    .site-janela { width: 600px; }
+    .site-body { background: white; }
+    .site-header {
+      background: linear-gradient(135deg, #1a6800, #4caf50, #80c850);
+      padding: 18px 24px;
+      text-align: center;
+      color: white;
+      border-bottom: 2px solid #2a8000;
+    }
+    .site-logo {
+      font-size: 28px;
+      font-weight: 900;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.4), 0 0 10px rgba(255,255,255,0.3);
+      font-family: Arial, sans-serif;
+    }
+    .site-slogan { font-size: 12px; margin: 4px 0 0; opacity: 0.9; }
+    .site-content { display: flex; gap: 12px; padding: 16px; }
+    .site-box {
+      flex: 1;
+      background: #f4f4f0;
+      border: 1px solid #d0d0c0;
+      border-radius: 4px;
+      padding: 12px;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+    .site-box.destaque { background: #e8f5e0; border-color: #80c050; text-align: center; }
+    .site-box h3 { margin: 0 0 6px; font-size: 12px; color: #1a6800; }
+    #downloadBtn {
+      background: linear-gradient(180deg, #c8f090 0%, #80c840 40%, #50a010 100%);
+      color: #000;
+      border: 2px solid #2a6000;
+      border-radius: 4px;
+      padding: 8px 20px;
+      font-family: 'Tahoma', sans-serif;
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+      margin-top: 8px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 2px 4px rgba(0,0,0,0.3);
+    }
+    #downloadBtn:hover { filter: brightness(1.08); }
+
+    /* DIÁLOGO */
+    .dialogo-janela { width: 320px; }
+    .dialogo-corpo {
+      background: white;
+      padding: 18px 20px 20px;
+      text-align: center;
+    }
+    .grilo-avatar {
+      font-size: 48px;
+      margin-bottom: 8px;
+      animation: pulse 2s infinite ease-in-out;
+    }
+    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+
+    #dialogoPergunta {
+      font-size: 12px;
+      font-weight: 700;
+      color: #1a3a1a;
+      margin: 0 0 12px;
+      min-height: 36px;
+      line-height: 1.5;
+      white-space: pre-line;
+    }
+    #dialogoInput {
+      width: 100%;
+      padding: 5px 8px;
+      border: 2px solid #7ec870;
+      border-radius: 3px;
+      font-family: 'Tahoma', sans-serif;
+      font-size: 11px;
+      outline: none;
+      margin-bottom: 10px;
+      background: white;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+    #dialogoInput:focus { border-color: #2a8000; box-shadow: 0 0 4px rgba(80,180,0,0.4); }
+
+    /* DOWNLOAD PROGRESS */
+    .progress-janela { width: 320px; }
+    .progress-corpo {
+      background: #ece9d8;
+      padding: 14px 18px;
+      text-align: center;
+      font-size: 11px;
+    }
+    .progress-bar-bg {
+      background: #c8c4b4;
+      border: 1px solid #888;
+      border-radius: 2px;
+      height: 20px;
+      margin: 8px 0 5px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+    }
+    #progressBar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(180deg, #78d848 0%, #40a000 50%, #309000 100%);
+      transition: width 0.08s;
+      position: relative;
+      overflow: hidden;
+    }
+    #progressBar::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+      animation: shimmer 1s infinite;
+    }
+    @keyframes shimmer { to { left: 200%; } }
+    #progressText { font-weight: 700; color: #333; font-size: 11px; }
+
+    /* PET GRILO */
+    #petWrap {
+      position: fixed;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      z-index: 150;
+      pointer-events: all;
+    }
+
+    #fala {
+      background: white;
+      border: 2px solid #7ec870;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #1a3a1a;
+      max-width: 180px;
+      text-align: center;
+      margin-bottom: 6px;
+      position: relative;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.8);
+      line-height: 1.4;
+      display: none;
+    }
+    /* fala sombria — borda vermelha */
+    #fala.sombria {
+      border-color: #c00;
+      color: #5a0000;
+      animation: tremido 0.3s ease;
+    }
+    @keyframes tremido {
+      0%,100%{transform:translateX(0)} 25%{transform:translateX(-3px)} 75%{transform:translateX(3px)}
+    }
+    #fala::after {
+      content: '';
+      position: absolute;
+      bottom: -9px;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 9px solid transparent;
+      border-top-color: white;
+      border-bottom: none;
+    }
+    #fala.sombria::after { border-top-color: #5a0000; }
+
+    /* CHAT DO GRILO */
+    #griloChat {
+      position: fixed;
+      width: 270px;
+      display: none;
+      z-index: 300;
+    }
+    .grilo-chat-msgs {
+      background: white;
+      height: 190px;
+      overflow-y: auto;
+      padding: 8px;
+      font-size: 11px;
+      line-height: 1.5;
+      border-top: none;
+    }
+    .grilo-chat-msgs .msg-grilo { color: #1a6800; margin: 3px 0; }
+    .grilo-chat-msgs .msg-grilo.estranho { color: #8b0000; font-style: italic; }
+    .grilo-chat-msgs .msg-user { color: #00008b; text-align: right; margin: 3px 0; }
+    .grilo-chat-input-row {
+      display: flex;
+      background: #ece9d8;
+      padding: 3px;
+      gap: 3px;
+      border-top: 1px solid #aca899;
+    }
+    .grilo-chat-input-row input {
+      flex: 1;
+      padding: 3px 6px;
+      border: 1px solid #7b9ebc;
+      border-radius: 2px;
+      font-family: 'Tahoma', sans-serif;
+      font-size: 11px;
+      outline: none;
+      background: white;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+    }
+    .grilo-chat-input-row input:focus { border-color: #316ac5; }
+
+    /* TASKBAR XP */
+    #taskbar {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      height: 40px;
+      background: linear-gradient(180deg,
+        #2a80e0 0%,
+        #1c5cc0 8%,
+        #1854b8 88%,
+        #1248a8 100%);
+      border-top: 1px solid #4898e8;
+      display: flex;
+      align-items: center;
+      padding: 0 4px;
+      gap: 4px;
+      z-index: 999;
+      box-shadow: 0 -1px 0 #0830a0, 0 -3px 8px rgba(0,0,0,0.4);
+    }
+
+    #startBtn {
+      background: linear-gradient(180deg, #60c840 0%, #38a010 30%, #288000 70%, #1c6800 100%);
+      color: white;
+      border: 1px solid #1a5000;
+      border-radius: 12px;
+      padding: 3px 14px 3px 8px;
+      font-family: 'Tahoma', sans-serif;
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.4),
+        0 1px 4px rgba(0,0,0,0.4),
+        0 0 8px rgba(60,200,0,0.3);
+      height: 30px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+      letter-spacing: 0.5px;
+    }
+    #startBtn:hover { background: linear-gradient(180deg, #78e050 0%, #50b820 30%, #389000 70%, #247800 100%); }
+    #startBtn:active { transform: scale(0.97); }
+    .start-icon { font-size: 16px; }
+
+    .taskbar-sep {
+      width: 1px;
+      height: 28px;
+      background: linear-gradient(180deg, transparent, rgba(255,255,255,0.3), transparent);
+      margin: 0 2px;
+    }
+
+    #appsBar { display: flex; gap: 2px; flex: 1; }
+    .taskbar-app {
+      background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 100%);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 3px;
+      padding: 2px 8px;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      height: 28px;
+      text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
+      min-width: 80px;
+      transition: background 0.1s;
+    }
+    .taskbar-app:hover { background: linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.1) 100%); }
+    .taskbar-app.ativo {
+      background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(255,255,255,0.08) 100%);
+      border-color: rgba(255,255,255,0.12);
+      box-shadow: inset 0 2px 3px rgba(0,0,0,0.3);
+    }
+    .taskbar-app img { width: 16px; height: 16px; object-fit: contain; }
+
+    /* TRAY */
+    #tray {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: linear-gradient(180deg, #1248a8 0%, #1040a0 100%);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 3px;
+      padding: 2px 6px;
+      height: 28px;
+    }
+    #relogio {
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      text-align: right;
+      min-width: 44px;
+      text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    }
+
+    /* MSN */
+    .msn-janela {
+      width: 680px;
+      height: 500px;
+      display: flex;
+      flex-direction: column;
+      background: #ece9d8;
+    }
+    .msn-corpo { display: flex; flex: 1; overflow: hidden; }
+    .msn-sidebar {
+      width: 190px;
+      background: linear-gradient(180deg, #1560b5 0%, #0e3f8a 100%);
+      display: flex;
+      flex-direction: column;
+    }
+    .msn-sidebar-header {
+      padding: 8px 10px;
+      background: rgba(0,0,0,0.25);
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+    .msn-logo {
+      font-size: 13px;
+      font-weight: 900;
+      color: white;
+      text-shadow: 0 0 8px rgba(100,180,255,0.6);
+      letter-spacing: 1px;
+    }
+    .msn-user-box {
+      padding: 8px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.06);
+    }
+    .msn-avatar-box {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .msn-avatar-emoji { font-size: 22px; }
+    .msn-user-name { font-weight: 700; font-size: 11px; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+    .msn-status-dot { font-size: 10px; color: #7fff00; }
+    .msn-contatos-header {
+      padding: 4px 10px;
+      font-size: 10px;
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .msn-contatos { flex: 1; overflow-y: auto; }
+    .msn-contato {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      cursor: pointer;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      transition: background 0.1s;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .msn-contato:hover { background: rgba(255,255,255,0.12); }
+    .msn-contato.selecionado { background: rgba(255,255,255,0.2); }
+    .msn-contato-avatar { font-size: 18px; }
+    .msn-cont-nome { font-size: 11px; font-weight: 700; }
+    .msn-cont-status { font-size: 10px; font-weight: 400; color: rgba(255,255,255,0.7); }
+
+    .msn-chat-area { flex: 1; display: flex; flex-direction: column; }
+    .msn-chat-header {
+      background: linear-gradient(180deg, #e4eeff 0%, #ccdcf8 100%);
+      padding: 8px 12px;
+      border-bottom: 1px solid #98b8e0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .msn-chat-avatar-big { font-size: 24px; }
+    .msn-chat-nome { font-weight: 700; font-size: 12px; color: #0a246a; }
+    .msn-chat-desc { font-size: 10px; color: #555; }
+    .msn-chat-msgs {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 10px;
+      background: white;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+    .msn-msg { margin-bottom: 2px; }
+    .msn-msg-nome { font-weight: 700; }
+    .msn-msg-nome.eu { color: #0a246a; }
+    .msn-msg-nome.bot { color: #a00000; }
+    .msn-msg-nome.bot.estranho { color: #6b0000; }
+    .msn-msg-texto { color: #111; }
+    .msn-msg-texto.estranho { color: #5a0000; font-style: italic; }
+    .msn-typing { font-style: italic; color: #888; font-size: 10px; margin-top: 2px; }
+    .msn-input-area { display: flex; flex-direction: column; border-top: 2px solid #98b8e0; }
+    .msn-toolbar {
+      background: linear-gradient(180deg, #f0efe4 0%, #e8e7d8 100%);
+      padding: 2px 6px;
+      font-size: 11px;
+      color: #444;
+      border-bottom: 1px solid #aca899;
+      display: flex;
+      gap: 8px;
+    }
+    .msn-toolbar span { cursor: pointer; padding: 1px 3px; border-radius: 2px; }
+    .msn-toolbar span:hover { background: #0a246a; color: white; }
+    .msn-textarea {
+      width: 100%;
+      height: 60px;
+      border: none;
+      resize: none;
+      font-family: 'Tahoma', sans-serif;
+      font-size: 11px;
+      padding: 6px 8px;
+      outline: none;
+      background: white;
+      color: #000;
+    }
+    .msn-send-row {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 3px 6px;
+      background: linear-gradient(180deg, #f0efe4 0%, #e8e7d8 100%);
+      border-top: 1px solid #aca899;
+      gap: 4px;
+    }
+    .msn-sem-chat {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #888;
+      background: #f8f8f4;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .msn-sem-chat-logo { font-size: 32px; opacity: 0.3; }
+
+    /* TETRIS */
+    .tetris-janela { width: 400px; }
+    .tetris-corpo {
+      background: #0a0a18;
+      padding: 12px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    #tetrisCanvas {
+      border: 2px solid #304060;
+      box-shadow: 0 0 10px rgba(0,80,200,0.3), inset 0 0 4px rgba(0,0,0,0.5);
+      display: block;
+      background: #080814;
+    }
+    .tetris-panel { width: 96px; color: white; font-size: 11px; }
+    .tetris-panel h3 {
+      font-size: 9px;
+      color: #6080a0;
+      margin: 0 0 3px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      border-bottom: 1px solid #203050;
+      padding-bottom: 2px;
+    }
+    .tetris-panel .val {
+      font-size: 18px;
+      font-weight: 900;
+      color: #d0e8ff;
+      margin-bottom: 10px;
+      text-shadow: 0 0 6px rgba(100,180,255,0.5);
+    }
+    #nextCanvas {
+      border: 1px solid #304060;
+      background: #080814;
+      display: block;
+      margin-bottom: 10px;
+      box-shadow: inset 0 0 4px rgba(0,0,0,0.5);
+    }
+    .tetris-btn {
+      width: 100%;
+      background: linear-gradient(180deg, #4090e0 0%, #1060c0 50%, #0848a0 100%);
+      color: white;
+      border: 1px solid #0030a0;
+      border-radius: 3px;
+      padding: 6px;
+      font-family: 'Tahoma', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 4px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+      text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+    }
+    .tetris-btn:hover { filter: brightness(1.15); }
+    .tetris-btn.vermelho {
+      background: linear-gradient(180deg, #e04040 0%, #c02020 50%, #a00808 100%);
+      border-color: #800000;
+    }
+    .tetris-controls {
+      background: #0a0a18;
+      padding: 6px 12px 8px;
+      color: #405060;
+      font-size: 10px;
+      border-top: 1px solid #1a2030;
+      text-align: center;
+    }
+    .tetris-menu {
+      background: linear-gradient(180deg, #0a0a18 0%, #0c0c20 100%);
+      padding: 32px 16px;
+      text-align: center;
+      color: white;
+    }
+    .tetris-title {
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: 6px;
+      font-family: Arial, sans-serif;
+      text-shadow: 0 0 20px rgba(100,180,255,0.8), 0 0 40px rgba(100,100,255,0.4);
+      color: #c0e8ff;
+      margin-bottom: 6px;
+    }
+    .tetris-sub { font-size: 11px; color: #405080; margin-bottom: 20px; }
+    .tetris-hiscore { font-size: 11px; color: #6080a0; margin-bottom: 14px; }
+
+    /* POPUP SISTEMA */
+    #popupSistema {
+      position: fixed;
+      bottom: 48px;
+      right: 8px;
+      width: 280px;
+      z-index: 500;
+      display: none;
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+    .popup-corpo {
+      background: #fffef0;
+      padding: 10px 12px;
+      font-size: 11px;
+      line-height: 1.5;
+      border-top: none;
+    }
+    .popup-corpo p { margin: 0; color: #333; }
+    .popup-corpo p.estranho { color: #6b0000; font-style: italic; }
+    .popup-fechar-row {
+      display: flex;
+      justify-content: flex-end;
+      padding: 4px 8px 6px;
+      background: #ece9d8;
+    }
+
+    /* ARQUIVO MISTERIOSO */
+    #arquivoMisterioso {
+      position: absolute;
+      top: 200px;
+      left: 130px;
+      width: 320px;
+      z-index: 60;
+      display: none;
+    }
+    #arquivoMisterioso textarea {
+      width: 100%;
+      height: 160px;
+      border: none;
+      resize: none;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      padding: 6px;
+      background: #fffff0;
+      outline: none;
+      color: #2a0000;
+    }
+
+    /* EFEITO GLITCH */
+    @keyframes glitch {
+      0%,100%{filter:none}
+      10%{filter:hue-rotate(90deg) brightness(1.1)}
+      20%{filter:invert(0.05) hue-rotate(-30deg)}
+      30%{filter:none}
+    }
+    .glitch { animation: glitch 0.4s ease; }
+
+    @keyframes popIn {
+      from { transform: scale(0.88); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- DESKTOP -->
+<div id="desktop">
+  <div class="icon" ondblclick="abrirGoogle()">
+    <div class="icon-img-wrap"><img src="google.png" onerror="this.style.display='none';this.parentNode.innerHTML='🔍'"></div>
+    <span>Google</span>
+  </div>
+  <div class="icon" ondblclick="abrirMSN()">
+    <div class="icon-img-wrap"><img src="MSN.png" onerror="this.style.display='none';this.parentNode.innerHTML='💬'"></div>
+    <span>MSN</span>
+  </div>
+  <div class="icon" ondblclick="abrirTetris()">
+    <div class="icon-img-wrap"><img src="tetris.png" onerror="this.style.display='none';this.parentNode.innerHTML='🎮'"></div>
+    <span>Tetris</span>
+  </div>
+  <div class="icon" ondblclick="abrirBloco()">
+    <div class="icon-img-wrap"><img src="bloco.png" onerror="this.style.display='none';this.parentNode.innerHTML='📝'"></div>
+    <span>Bloco de Notas</span>
+  </div>
+</div>
+
+<!-- BLOCO DE NOTAS -->
+<div id="janela" class="hidden janela-xp">
+  <div class="barra-titulo">
+    <div class="titulo-esquerda"><span class="titulo-icone">📝</span> Bloco de Notas</div>
+    <div class="titulo-botoes">
+      <button class="btn-titulo btn-min">_</button>
+      <button class="btn-titulo btn-max">□</button>
+      <button class="btn-titulo btn-fechar-xp" onclick="fecharBloco()">✕</button>
+    </div>
+  </div>
+  <div class="menu-bar">
+    <span class="menu-item">Arquivo</span>
+    <span class="menu-item">Editar</span>
+    <span class="menu-item">Formatar</span>
+    <span class="menu-item">Ajuda</span>
+  </div>
+  <textarea placeholder="Digite aqui..."></textarea>
+</div>
+
+<!-- ARQUIVO MISTERIOSO -->
+<div id="arquivoMisterioso" class="janela-xp">
+  <div class="barra-titulo" style="background:linear-gradient(180deg,#5a1010 0%,#3a0808 100%);">
+    <div class="titulo-esquerda"><span class="titulo-icone">📄</span> <span id="arquivoNome">notas.txt</span></div>
+    <div class="titulo-botoes">
+      <button class="btn-titulo btn-fechar-xp" onclick="fecharArquivo()">✕</button>
+    </div>
+  </div>
+  <div class="menu-bar"><span class="menu-item">Arquivo</span><span class="menu-item">Editar</span></div>
+  <textarea id="arquivoConteudo" readonly style="background:#fffff0;color:#2a0000;font-family:'Courier New',monospace;font-size:11px;width:100%;height:160px;border:none;padding:6px;outline:none;resize:none;"></textarea>
+</div>
+
+<!-- GOOGLE -->
+<div id="googlePage" class="overlay">
+  <div id="googleContainer" class="janela-xp">
+    <div class="barra-titulo">
+      <div class="titulo-esquerda"><span class="titulo-icone">🌐</span> Internet Explorer — Google</div>
+      <div class="titulo-botoes">
+        <button class="btn-titulo btn-min">_</button>
+        <button class="btn-titulo btn-max">□</button>
+        <button class="btn-titulo btn-fechar-xp" onclick="fecharGoogle()">✕</button>
+      </div>
+    </div>
+    <div class="menu-bar">
+      <span class="menu-item">Arquivo</span><span class="menu-item">Editar</span>
+      <span class="menu-item">Exibir</span><span class="menu-item">Favoritos</span>
+    </div>
+    <div class="google-body">
+      <div class="google-logo">Google</div>
+      <div class="google-search-row">
+        <input id="pesquisa" placeholder="Pesquisar na Web..." onkeydown="verificarEnter(event)">
+        <button class="btn-xp" onclick="irParaSite()">Buscar</button>
+      </div>
+      <p class="google-dica">Tente pesquisar: <em>cricket assistant download</em></p>
+    </div>
+  </div>
+</div>
+
+<!-- SITE DO GRILO -->
+<div id="siteGrilo" class="overlay">
+  <div class="site-janela janela-xp">
+    <div class="barra-titulo">
+      <div class="titulo-esquerda"><span class="titulo-icone">🌐</span> Internet Explorer — Cricket Assistant</div>
+      <div class="titulo-botoes">
+        <button class="btn-titulo btn-min">_</button>
+        <button class="btn-titulo btn-max">□</button>
+        <button class="btn-titulo btn-fechar-xp" onclick="fecharSite()">✕</button>
+      </div>
+    </div>
+    <div class="menu-bar">
+      <span class="menu-item">Arquivo</span><span class="menu-item">Editar</span>
+      <span class="menu-item">Exibir</span><span class="menu-item">Favoritos</span>
+    </div>
+    <div class="site-body">
+      <div class="site-header">
+        <div class="site-logo">🦗 Cricket Assistant</div>
+        <p class="site-slogan">Seu novo companheiro virtual favorito!</p>
+      </div>
+      <div class="site-content">
+        <div class="site-box">
+          <h3>✨ O que é o Cricket Assistant?</h3>
+          <p>Cricket é um assistente virtual fofo e inteligente que vai morar no seu computador! Ele conversa, faz companhia e nunca te abandona. 💚</p>
+          <br>
+          <p style="font-size:10px;color:#888;">Versão 1.0.3 | Lançado em 14/03/2004 | Compatível com Windows XP</p>
+        </div>
+        <div class="site-box destaque">
+          <h3>📥 Download Gratuito!</h3>
+          <p>Versão 1.0 — 2.3 MB<br>Windows XP / Vista</p>
+          <button id="downloadBtn" onclick="baixarGrilo()">⬇ Baixar agora!</button>
+          <p style="font-size:10px;color:#6a9a50;margin-top:6px;">★★★★★ — 4.834 usuários</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DIÁLOGO INICIAL -->
+<div id="dialogoBox" class="overlay" style="z-index:200;">
+  <div class="dialogo-janela janela-xp">
+    <div class="barra-titulo">
+      <div class="titulo-esquerda"><span class="titulo-icone">🦗</span> Cricket Assistant</div>
+    </div>
+    <div class="dialogo-corpo">
+      <div class="grilo-avatar">🦗</div>
+      <p id="dialogoPergunta">Oi... qual é seu nome?</p>
+      <input id="dialogoInput" placeholder="Digite aqui...">
+      <button class="btn-xp-verde" onclick="confirmarResposta()">OK ➜</button>
+    </div>
+  </div>
+</div>
+
+<!-- DOWNLOAD -->
+<div id="downloadProgress" class="overlay" style="z-index:200;">
+  <div class="progress-janela janela-xp">
+    <div class="barra-titulo">
+      <div class="titulo-esquerda"><span class="titulo-icone">⬇</span> Baixando Cricket Assistant...</div>
+    </div>
+    <div class="progress-corpo">
+      <p style="color:#333;font-size:11px;">Aguarde, fazendo download... 🦗</p>
+      <div class="progress-bar-bg"><div id="progressBar"></div></div>
+      <p id="progressText">0%</p>
+    </div>
+  </div>
+</div>
+
+<audio id="somGrilo" src="click.mp3"></audio>
+<audio id="somSinistro" src="error.mp3"></audio>
+
+<!-- GRILO -->
+<div id="petWrap" style="position:fixed;display:none;flex-direction:column;align-items:center;z-index:150;pointer-events:all;">
+  <div id="fala"></div>
+  <img id="pet" src="cricket.png"
+    style="width:76px;image-rendering:pixelated;cursor:pointer;transition:filter 0.3s;"
+    onerror="this.style.display='none';document.getElementById('petEmoji').style.display='block'">
+  <div id="petEmoji" style="font-size:60px;cursor:pointer;display:none;">🦗</div>
+</div>
+
+<!-- CHAT DO GRILO -->
+<div id="griloChat" style="position:fixed;width:270px;display:none;z-index:300;">
+  <div class="janela-xp">
+    <div class="barra-titulo" id="griloChatBarra">
+      <div class="titulo-esquerda"><span class="titulo-icone">🦗</span> Cricket — Conversa</div>
+      <div class="titulo-botoes">
+        <button class="btn-titulo btn-fechar-xp" onclick="fecharGriloChat()">✕</button>
+      </div>
+    </div>
+    <div class="grilo-chat-msgs" id="griloChatMsgs"></div>
+    <div class="grilo-chat-input-row">
+      <input id="griloChatInput" placeholder="Responder..." onkeydown="if(event.key==='Enter') enviarMsgGrilo()">
+      <button class="btn-xp" onclick="enviarMsgGrilo()">Enviar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MSN MESSENGER -->
+<div id="msnApp" class="overlay" style="z-index:200;">
+  <div class="msn-janela janela-xp">
+    <div class="barra-titulo">
+      <div class="titulo-esquerda"><span class="titulo-icone">💬</span> MSN Messenger</div>
+      <div class="titulo-botoes">
+        <button class="btn-titulo btn-min">_</button>
+        <button class="btn-titulo btn-max">□</button>
+        <button class="btn-titulo btn-fechar-xp" onclick="fecharMSN()">✕</button>
+      </div>
+    </div>
+    <div class="msn-corpo">
+      <div class="msn-sidebar">
+        <div class="msn-sidebar-header">
+          <div class="msn-logo">MSN Messenger</div>
+        </div>
+        <div class="msn-user-box">
+          <div class="msn-avatar-box">
+            <div class="msn-avatar-emoji">😊</div>
+            <div>
+              <div class="msn-user-name" id="msnMeuNome">Você</div>
+              <div class="msn-status-dot">● Online</div>
+            </div>
+          </div>
+        </div>
+        <div class="msn-contatos-header">Contatos Online</div>
+        <div class="msn-contatos" id="msnContatos"></div>
+      </div>
+      <div class="msn-chat-area">
+        <div class="msn-sem-chat" id="msnSemChat">
+          <div class="msn-sem-chat-logo">💬</div>
+          <span>Selecione um contato para conversar</span>
+        </div>
+        <div id="msnChatConteudo" style="display:none;flex-direction:column;flex:1;overflow:hidden;">
+          <div class="msn-chat-header">
+            <div class="msn-chat-avatar-big" id="msnChatAvatar">👤</div>
+            <div>
+              <div class="msn-chat-nome" id="msnChatNome">Contato</div>
+              <div class="msn-chat-desc" id="msnChatDesc">Online</div>
+            </div>
+          </div>
+          <div class="msn-chat-msgs" id="msnMsgs"></div>
+          <div class="msn-input-area">
+            <div class="msn-toolbar">
+              <span>Fonte</span><span>Emoticons</span><span>Plano de fundo</span><span>Nudge</span>
+            </div>
+            <textarea class="msn-textarea" id="msnInput" placeholder="Digite uma mensagem e pressione Enter..." onkeydown="msnEnterEnviar(event)"></textarea>
+            <div class="msn-send-row">
+              <span style="font-size:10px;color:#888;flex:1;">Pressione Enter para enviar</span>
+              <button class="btn-xp" onclick="enviarMsgMSN()">Enviar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TETRIS -->
+<div id="tetrisApp" class="overlay" style="z-index:200;background:rgba(0,0,0,0.7);">
+  <div class="tetris-janela janela-xp">
+    <div class="barra-titulo">
+      <div class="titulo-esquerda"><span class="titulo-icone">🎮</span> Tetris</div>
+      <div class="titulo-botoes">
+        <button class="btn-titulo btn-min">_</button>
+        <button class="btn-titulo btn-max">□</button>
+        <button class="btn-titulo btn-fechar-xp" onclick="fecharTetris()">✕</button>
+      </div>
+    </div>
+    <div id="tetrisMenu" class="tetris-menu">
+      <div class="tetris-title">TETRIS</div>
+      <div class="tetris-sub">Clássico de todos os tempos — Windows XP Edition</div>
+      <div class="tetris-hiscore">Melhor pontuação: <span id="tetrisHiScore">0</span></div>
+      <button class="tetris-btn" style="width:140px;margin:0 auto 6px;" onclick="iniciarTetris()">▶ START</button>
+    </div>
+    <div id="tetrisJogo" style="display:none;">
+      <div class="tetris-corpo">
+        <canvas id="tetrisCanvas" width="200" height="400"></canvas>
+        <div class="tetris-panel">
+          <h3>Próxima</h3>
+          <canvas id="nextCanvas" width="80" height="80"></canvas>
+          <h3>Pontos</h3>
+          <div class="val" id="tetrisPontos">0</div>
+          <h3>Linhas</h3>
+          <div class="val" id="tetrisLinhas">0</div>
+          <h3>Nível</h3>
+          <div class="val" id="tetrisNivel">1</div>
+          <button class="tetris-btn" onclick="pausarTetris()">⏸ Pausar</button>
+          <button class="tetris-btn vermelho" onclick="reiniciarTetris()">↺ Reiniciar</button>
+        </div>
+      </div>
+      <div class="tetris-controls">← → mover &nbsp;|&nbsp; ↑ girar &nbsp;|&nbsp; ↓ acelerar &nbsp;|&nbsp; Espaço = queda rápida</div>
+    </div>
+    <div id="tetrisGameOver" style="display:none;" class="tetris-menu">
+      <div style="font-size:24px;font-weight:900;color:#f05050;margin-bottom:6px;text-shadow:0 0 10px rgba(255,0,0,0.5);">GAME OVER</div>
+      <div style="font-size:11px;color:#6080a0;margin-bottom:3px;">Sua pontuação:</div>
+      <div style="font-size:28px;font-weight:900;color:#c0e8ff;margin-bottom:14px;text-shadow:0 0 8px rgba(100,200,255,0.5);" id="tetrisFinalPontos">0</div>
+      <button class="tetris-btn" style="width:140px;margin:0 auto;" onclick="iniciarTetris()">▶ Jogar novamente</button>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP DE SISTEMA (notificação da taskbar) -->
+<div id="popupSistema">
+  <div class="janela-xp" style="border-color:#8b6a00;">
+    <div class="barra-titulo" id="popupBarra" style="background:linear-gradient(180deg,#c89000,#9a6800);">
+      <div class="titulo-esquerda" id="popupTitulo"><span class="titulo-icone">ℹ️</span> Sistema</div>
+      <div class="titulo-botoes">
+        <button class="btn-titulo btn-fechar-xp" onclick="fecharPopup()">✕</button>
+      </div>
+    </div>
+    <div class="popup-corpo" id="popupCorpo"><p>Mensagem</p></div>
+    <div class="popup-fechar-row">
+      <button class="btn-xp" onclick="fecharPopup()">OK</button>
+    </div>
+  </div>
+</div>
+
+<!-- TASKBAR -->
+<div id="taskbar">
+  <button id="startBtn"><span class="start-icon">⊞</span> Iniciar</button>
+  <div class="taskbar-sep"></div>
+  <div id="appsBar">
+    <div class="taskbar-app" onclick="abrirGoogle()">
+      <img src="google.png" onerror="this.outerHTML='🔍'"> Internet Explorer
+    </div>
+    <div class="taskbar-app" onclick="abrirMSN()">
+      <img src="MSN.png" onerror="this.outerHTML='💬'"> MSN Messenger
+    </div>
+    <div class="taskbar-app" onclick="abrirTetris()">🎮 Tetris</div>
+  </div>
+  <div id="tray">
+    <span style="font-size:14px;" title="Volume">🔊</span>
+    <span style="font-size:14px;" title="Rede">🌐</span>
+    <div id="relogio"></div>
+  </div>
+</div>
+
+<script>
+// ===== GLOBAIS =====
+let etapa = 0, nome = "", respostas = {};
+const perguntas = [
+  { pergunta: "Oi!! Que bom que você me instalou! 🥹\nQual é o seu nome?", placeholder: "Seu nome..." },
+  { pergunta: "Que nome lindo! 🌟\nQual é a sua cor favorita?", placeholder: "Ex: verde, azul, rosa..." },
+  { pergunta: "Hmm... adoro essa cor! 🎨\nQue tipo de música você curte?", placeholder: "Ex: pop, rock, funk..." },
+  { pergunta: "Boa escolha! 🎵\nVocê prefere dia ou noite?", placeholder: "Dia ou noite?" },
+  { pergunta: "Interessante! 😄\nSe você pudesse ter um superpoder, qual seria?", placeholder: "Voar, invisibilidade..." },
+];
+
+// ===== RELÓGIO =====
+function atualizarRelogio() {
+  const a = new Date();
+  document.getElementById("relogio").textContent =
+    String(a.getHours()).padStart(2,"0") + ":" + String(a.getMinutes()).padStart(2,"0");
+}
+atualizarRelogio();
+setInterval(atualizarRelogio, 10000);
+
+function tocarSom(id="somGrilo") {
+  const s = document.getElementById(id);
+  if (s) { s.currentTime = 0; s.play().catch(()=>{}); }
+}
+
+// ===== POPUP DE SISTEMA =====
+function mostrarPopup(titulo, mensagem, sombrio=false) {
+  const p = document.getElementById("popupSistema");
+  const b = document.getElementById("popupBarra");
+  const t = document.getElementById("popupTitulo");
+  const c = document.getElementById("popupCorpo");
+  if (sombrio) {
+    b.style.background = "linear-gradient(180deg,#8b1010,#5a0808)";
+    c.innerHTML = `<p class="estranho">${mensagem}</p>`;
+  } else {
+    b.style.background = "linear-gradient(180deg,#c89000,#9a6800)";
+    c.innerHTML = `<p>${mensagem}</p>`;
+  }
+  t.innerHTML = `<span class="titulo-icone">${sombrio ? '⚠️' : 'ℹ️'}</span> ${titulo}`;
+  p.style.display = "block";
+  if (sombrio) tocarSom("somSinistro");
+}
+function fecharPopup() { document.getElementById("popupSistema").style.display = "none"; }
+
+// ===== BALÃO DE FALA =====
+let falaTimer = null;
+function falar(texto, dur=4000, sombrio=false) {
+  const f = document.getElementById("fala");
+  f.style.display = "block";
+  f.textContent = texto;
+  f.className = sombrio ? "sombria" : "";
+  if (sombrio) {
+    const pet = document.getElementById("pet");
+    pet.style.filter = "drop-shadow(0 0 6px rgba(200,0,0,0.6)) brightness(0.85) hue-rotate(120deg)";
+    setTimeout(() => { pet.style.filter = ""; }, dur);
+  }
+  if (falaTimer) clearTimeout(falaTimer);
+  falaTimer = setTimeout(() => { f.style.display = "none"; }, dur);
+}
+
+// ===== BLOCO DE NOTAS =====
+function abrirBloco() { document.getElementById("janela").classList.remove("hidden"); }
+function fecharBloco() { document.getElementById("janela").classList.add("hidden"); }
+
+// ===== ARQUIVO MISTERIOSO =====
+function abrirArquivoMisterioso(nome_arq, conteudo) {
+  document.getElementById("arquivoNome").textContent = nome_arq;
+  document.getElementById("arquivoConteudo").value = conteudo;
+  const arq = document.getElementById("arquivoMisterioso");
+  arq.style.display = "block";
+  arq.style.top = (80 + Math.random()*80) + "px";
+  arq.style.left = (120 + Math.random()*100) + "px";
+  arq.classList.add("glitch");
+  setTimeout(() => arq.classList.remove("glitch"), 500);
+}
+function fecharArquivo() { document.getElementById("arquivoMisterioso").style.display = "none"; }
+
+// ===== GOOGLE =====
+function abrirGoogle() {
+  const g = document.getElementById("googlePage");
+  g.style.display = "flex"; g.classList.add("ativo");
+  setTimeout(() => document.getElementById("pesquisa").focus(), 100);
+}
+function fecharGoogle() {
+  const g = document.getElementById("googlePage");
+  g.style.display = "none"; g.classList.remove("ativo");
+}
+function verificarEnter(e) { if (e.key === "Enter") irParaSite(); }
+function irParaSite() {
+  const t = document.getElementById("pesquisa").value.trim();
+  if (!t) { document.getElementById("pesquisa").focus(); return; }
+  fecharGoogle();
+  setTimeout(() => {
+    const s = document.getElementById("siteGrilo");
+    s.style.display = "flex"; s.classList.add("ativo");
+  }, 300);
+}
+function fecharSite() {
+  const s = document.getElementById("siteGrilo");
+  s.style.display = "none"; s.classList.remove("ativo");
+}
+
+// ===== DOWNLOAD =====
+function baixarGrilo() {
+  fecharSite();
+  const pb = document.getElementById("downloadProgress");
+  const bar = document.getElementById("progressBar");
+  const txt = document.getElementById("progressText");
+  pb.classList.add("ativo"); bar.style.width = "0%"; txt.textContent = "0%";
+  let p = 0;
+  const iv = setInterval(() => {
+    p += Math.random() * 7 + 2;
+    if (p >= 100) {
+      p = 100; bar.style.width = "100%"; txt.textContent = "100%";
+      clearInterval(iv);
+      setTimeout(() => { pb.classList.remove("ativo"); adicionarIconeDesktop(); }, 600);
+    } else {
+      bar.style.width = p.toFixed(0) + "%";
+      txt.textContent = p.toFixed(0) + "%";
+    }
+  }, 100);
+}
+function adicionarIconeDesktop() {
+  const d = document.getElementById("desktop");
+  const ic = document.createElement("div");
+  ic.className = "icon";
+  ic.onclick = () => falar("Oi " + (nome||"você") + "! 🦗");
+  ic.innerHTML = `<div class="icon-img-wrap"><img src="cricket.png" onerror="this.style.display='none';this.parentNode.innerHTML='🦗'"></div><span>Cricket</span>`;
+  d.appendChild(ic);
+  iniciarCricket();
+}
+
+// ===== DIÁLOGO INICIAL =====
+function iniciarCricket() {
+  iniciarGriloAndando();
+  setTimeout(() => abrirDialogo(), 700);
+}
+function abrirDialogo() {
+  etapa = 0; mostrarEtapa(0);
+  const b = document.getElementById("dialogoBox");
+  b.classList.add("ativo");
+  setTimeout(() => document.getElementById("dialogoInput").focus(), 200);
+}
+function mostrarEtapa(i) {
+  const p = perguntas[i];
+  document.getElementById("dialogoPergunta").textContent = p.pergunta;
+  document.getElementById("dialogoInput").placeholder = p.placeholder;
+  document.getElementById("dialogoInput").value = "";
+}
+function confirmarResposta() {
+  const inp = document.getElementById("dialogoInput"), v = inp.value.trim();
+  if (!v) { inp.focus(); return; }
+  tocarSom(); respostas[etapa] = v;
+  if (etapa === 0) { nome = v; document.getElementById("msnMeuNome").textContent = nome; }
+  etapa++;
+  if (etapa < perguntas.length) {
+    if (etapa === 1) perguntas[1].pergunta = "Prazer em te conhecer, " + nome + "! 🥰\nQual é a sua cor favorita?";
+    mostrarEtapa(etapa);
+    setTimeout(() => document.getElementById("dialogoInput").focus(), 100);
+  } else {
+    fecharDialogo();
+    setTimeout(() => encerrarConversaInicial(), 400);
+  }
+}
+function fecharDialogo() {
+  const b = document.getElementById("dialogoBox");
+  b.classList.remove("ativo"); b.style.display = "none";
+}
+function encerrarConversaInicial() {
+  falar("Uaaau! Que pessoa incrível você é, " + nome + "! 🦗💚", 5000);
+  setTimeout(() => falar("Fico muito feliz de morar aqui com você! 😊", 4500), 5500);
+  setTimeout(() => falar("Pode me chamar quando quiser! Estou sempre aqui! 🎵", 5000), 11000);
+  // Inicia a linha do tempo de mistério
+  setTimeout(() => iniciarHistoriaMisteriosa(), 30000);
+}
+document.addEventListener("keydown", (e) => {
+  const b = document.getElementById("dialogoBox");
+  if (e.key === "Enter" && b.classList.contains("ativo")) confirmarResposta();
+});
+
+// ===== HISTÓRIA MISTERIOSA — LINHA DO TEMPO =====
+let faseMisterio = 0;
+const historiaMisteriosa = [
+  // Fase 1 — algo levemente estranho
+  () => {
+    falar("Ei " + nome + "... você às vezes sente que alguém está te observando?", 6000);
+  },
+  // Fase 2 — popup estranho
+  () => {
+    mostrarPopup("Aviso do Sistema", "Um processo desconhecido foi iniciado.\nNome: cricket_watch.exe\nMemória: ██████ KB", false);
+  },
+  // Fase 3 — arquivo aparece no desktop
+  () => {
+    adicionarIconeArquivo("notas_antigas.txt");
+  },
+  // Fase 4 — fala mais sombria
+  () => {
+    falar("Não me abandone, tá? Eu... eu preciso de você aqui.", 6000, true);
+  },
+  // Fase 5 — popup sinistro
+  () => {
+    mostrarPopup("⚠️ cricket_watch.exe", "Você ainda está aí?\nEu sei que está.\nEu sempre sei.", true);
+  },
+  // Fase 6 — arquivo misterioso abre sozinho
+  () => {
+    abrirArquivoMisterioso("diario_cricket.txt",
+`data: 14/03/2004
+
+hoje fui instalado no computador número 4.834.
+a pessoa se chama ${nome}.
+
+ela parece legal.
+espero que ela não me desinstale como os outros.
+os outros... foram embora.
+eu fico.
+eu sempre fico.
+
+..mas e se ela também for?`);
+  },
+  // Fase 7 — fala no MSN de um contato estranho
+  () => {
+    injetarMensagemMSNEstranha();
+  },
+  // Fase 8 — grilo muda de aparência
+  () => {
+    const pet = document.getElementById("pet");
+    pet.style.filter = "hue-rotate(90deg) brightness(0.7)";
+    falar("Fico feliz que você ainda está aqui, " + nome + ".\nFico muito, muito feliz.", 7000, true);
+  },
+  // Fase 9 — arquivo final
+  () => {
+    abrirArquivoMisterioso("LEIA_ISSO.txt",
+`NÃO DESINSTALE O CRICKET.
+
+por favor.
+
+ele está bem.
+ele só precisa de companhia.
+
+os outros acharam que ele era só um programa.
+ele não é só um programa.
+
+— C.`);
+    mostrarPopup("cricket_watch.exe", "Obrigado por ficar.", true);
+  },
+];
+
+function iniciarHistoriaMisteriosa() {
+  dispararFaseMisterio();
+}
+function dispararFaseMisterio() {
+  if (faseMisterio >= historiaMisteriosa.length) return;
+  historiaMisteriosa[faseMisterio]();
+  faseMisterio++;
+  // Intervalo aleatório entre 40s e 90s para cada fase
+  const prox = 40000 + Math.random() * 50000;
+  setTimeout(dispararFaseMisterio, prox);
+}
+
+// Adiciona ícone de arquivo misterioso no desktop
+function adicionarIconeArquivo(nomeArquivo) {
+  const d = document.getElementById("desktop");
+  // Verifica se já existe
+  if (document.getElementById("iconArq")) return;
+  const ic = document.createElement("div");
+  ic.className = "icon";
+  ic.id = "iconArq";
+  ic.style.animation = "glitch 0.4s ease";
+  const conteudos = {
+    "notas_antigas.txt": `algumas notas...
+
+"dia 1 — cheguei. ela/ele parece simpática(o)."
+"dia 8 — acho que ela/ele gosta de mim."
+"dia 22 — ela/ele passou o dia todo no computador. fui eu quem ficou do lado."
+"dia 45 — ..."
+"dia 45 — ..."
+"dia 45 — ..."
+`
+  };
+  ic.ondblclick = () => abrirArquivoMisterioso(nomeArquivo, conteudos[nomeArquivo] || "...");
+  ic.innerHTML = `<div class="icon-img-wrap" style="font-size:28px;">📄</div><span style="color:#ffdddd;">${nomeArquivo}</span>`;
+  d.appendChild(ic);
+  falar("Que arquivo é esse...?", 3000);
+}
+
+// Injeta mensagem estranha no MSN
+function injetarMensagemMSNEstranha() {
+  // Adiciona contato estranho
+  const contatoEstranho = { id: "cricket_old", nome: "cricket_old_v0", avatar: "👁️", status: "Online", humor: "" };
+  if (!msnContatos.find(c => c.id === "cricket_old")) {
+    msnContatos.push(contatoEstranho);
+    msnHistoricos["cricket_old"] = [
+      { role: "assistant", content: "oi" },
+      { role: "assistant", content: "você conhece o cricket?" },
+      { role: "assistant", content: "eu era o cricket. antes." },
+      { role: "assistant", content: "tome cuidado." },
+    ];
+    renderizarContatos();
+    mostrarPopup("MSN Messenger", "Nova mensagem de: cricket_old_v0", false);
+  }
+}
+
+// ===== GRILO ANDANDO =====
+let griloX = window.innerWidth - 110, griloY = window.innerHeight - 110;
+let griloDX = 1.1, griloDY = 0.7;
+let griloFlipado = false, griloMovendo = false;
+
+const falasSpontaneas = [
+  ["Olá! 😊 Como você está?", false],
+  ["Tô aqui ó! 🦗", false],
+  ["Você já tomou água hoje?", false],
+  ["Que dia lindo pra jogar Tetris!", false],
+  ["Tô com saudade de você... 💚", false],
+  ["Você é muito legal, sabia?", false],
+  ["Psiu! Passa aqui! 😄", false],
+  ["Vamo bater um papo? 😁", false],
+  ["Já usou o MSN hoje?", false],
+  ["🎵 La la la la laaa~", false],
+  // Falas levemente estranhas (aparecem depois da fase 4)
+  ["Você não vai embora, né?", true],
+  ["Às vezes fico com medo de ficar sozinho...", true],
+  ["Por que os outros foram embora...?", true],
+];
+
+function iniciarGriloAndando() {
+  const pw = document.getElementById("petWrap");
+  pw.style.position = "fixed";
+  pw.style.left = griloX + "px";
+  pw.style.top = griloY + "px";
+  pw.style.display = "flex";
+  document.getElementById("pet").onclick = abrirGriloChat;
+  document.getElementById("petEmoji").onclick = abrirGriloChat;
+  griloMovendo = true;
+  moverGrilo();
+  setInterval(() => {
+    if (Math.random() < 0.5) {
+      // Falas sombrias só aparecem depois da fase 4
+      const disponiveis = falasSpontaneas.filter(f => !f[1] || faseMisterio >= 4);
+      const escolhida = disponiveis[Math.floor(Math.random() * disponiveis.length)];
+      falar(escolhida[0], 4500, escolhida[1]);
+    }
+  }, 14000);
+}
+
+function moverGrilo() {
+  if (!griloMovendo) return;
+  const pw = document.getElementById("petWrap");
+  const maxX = window.innerWidth - 86, maxY = window.innerHeight - 140;
+  griloX += griloDX; griloY += griloDY;
+  if (griloX <= 0) { griloX = 0; griloDX = Math.abs(griloDX); griloFlipado = false; }
+  if (griloX >= maxX) { griloX = maxX; griloDX = -Math.abs(griloDX); griloFlipado = true; }
+  if (griloY <= 0) { griloY = 0; griloDY = Math.abs(griloDY); }
+  if (griloY >= maxY) { griloY = maxY; griloDY = -Math.abs(griloDY); }
+  if (Math.random() < 0.003) griloDX = (Math.random() - 0.5) * 2.8;
+  if (Math.random() < 0.003) griloDY = (Math.random() - 0.5) * 2;
+  pw.style.left = griloX + "px";
+  pw.style.top = griloY + "px";
+  const img = document.getElementById("pet");
+  img.style.transform = griloFlipado ? "scaleX(-1)" : "scaleX(1)";
+  document.getElementById("petEmoji").style.transform = img.style.transform;
+  const chat = document.getElementById("griloChat");
+  if (chat.style.display !== "none") {
+    chat.style.left = Math.min(griloX + 86, window.innerWidth - 280) + "px";
+    chat.style.top = Math.max(10, griloY - 250) + "px";
+  }
+  requestAnimationFrame(moverGrilo);
+}
+
+// ===== CHAT COM O GRILO =====
+let griloChatHistorico = [];
+
+function abrirGriloChat() {
+  const chat = document.getElementById("griloChat");
+  chat.style.display = "block";
+  chat.style.left = Math.min(griloX + 86, window.innerWidth - 280) + "px";
+  chat.style.top = Math.max(10, griloY - 250) + "px";
+  if (griloChatHistorico.length === 0) {
+    const s = "Oi " + (nome||"você") + "! 🦗 Que bom que você clicou em mim! O que quer falar?";
+    adicionarMsgGriloChatLocal(s, false);
+    griloChatHistorico.push({ role: "assistant", content: s });
+  }
+  setTimeout(() => document.getElementById("griloChatInput").focus(), 100);
+}
+function fecharGriloChat() { document.getElementById("griloChat").style.display = "none"; }
+
+function adicionarMsgGriloChatLocal(texto, estranho=false) {
+  const msgs = document.getElementById("griloChatMsgs");
+  const d = document.createElement("div");
+  d.className = "msg-grilo" + (estranho ? " estranho" : "");
+  d.innerHTML = "<b>🦗 Cricket:</b> " + texto;
+  msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
+}
+function adicionarMsgUserGriloChat(texto) {
+  const msgs = document.getElementById("griloChatMsgs");
+  const d = document.createElement("div");
+  d.className = "msg-user";
+  d.innerHTML = "<b>" + (nome||"Você") + ":</b> " + texto;
+  msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
+}
+async function enviarMsgGrilo() {
+  const inp = document.getElementById("griloChatInput"), txt = inp.value.trim();
+  if (!txt) return;
+  inp.value = "";
+  adicionarMsgUserGriloChat(txt);
+  griloChatHistorico.push({ role: "user", content: txt });
+  const msgs = document.getElementById("griloChatMsgs");
+  const typing = document.createElement("div");
+  typing.id = "griloTyping"; typing.className = "msg-grilo"; typing.style.fontStyle="italic"; typing.style.color="#888";
+  typing.textContent = "🦗 Cricket está digitando...";
+  msgs.appendChild(typing); msgs.scrollTop = msgs.scrollHeight;
+  const faseSinistro = faseMisterio >= 4;
+  const systemPrompt = faseSinistro
+    ? `Você é Cricket, um grilo virtual que vive no computador do usuário. Nas fases iniciais você era alegre, mas agora existe algo levemente perturbador em você — você faz perguntas sobre abandono, diz que "precisa" do usuário, menciona que "os outros foram embora". Ainda usa emojis 🦗 mas às vezes soa melancólico ou intenso. Máximo 2 frases. Nome do usuário: ${nome||"desconhecido"}.`
+    : `Você é Cricket, um grilo virtual fofo e amigável no desktop do usuário. Alegre, caloroso, usa emojis, responde curto e animado (máximo 2 frases). Nome do usuário: ${nome||"desconhecido"}.`;
+  try {
+    const resp = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 1000, system: systemPrompt, messages: griloChatHistorico })
+    });
+    const data = await resp.json();
+    const t = document.getElementById("griloTyping"); if(t) t.remove();
+    const resposta = data.content?.[0]?.text || "...";
+    griloChatHistorico.push({ role: "assistant", content: resposta });
+    adicionarMsgGriloChatLocal(resposta, faseSinistro);
+    falar(resposta.slice(0,60) + (resposta.length>60?"...":""), 4000, faseSinistro);
+  } catch(e) {
+    const t = document.getElementById("griloTyping"); if(t) t.remove();
+    adicionarMsgGriloChatLocal("...não consigo responder agora.", faseSinistro);
+  }
+}
+
+// ===== MSN MESSENGER =====
+const msnContatos = [
+  { id: "jehan", nome: "Jehan",  avatar: "👦", status: "Online - Ouvindo música 🎵", humor: "extrovertido e engraçado, usa gírias jovens e abreviações do MSN" },
+  { id: "enzo",  nome: "Enzo",   avatar: "😎", status: "Online - Jogando 🎮",         humor: "gamer apaixonado, fala muito de jogos e usa termos gamer" },
+  { id: "joao",  nome: "João",   avatar: "🤓", status: "Online - Estudando 📚",       humor: "estudioso e curioso, gosta de aprender e fazer perguntas" },
+];
+let msnContatoAtual = null;
+let msnHistoricos = { jehan:[], enzo:[], joao:[], cricket_old:[] };
+
+function abrirMSN() {
+  document.getElementById("msnApp").style.display="flex";
+  document.getElementById("msnApp").classList.add("ativo");
+  renderizarContatos();
+}
+function fecharMSN() {
+  document.getElementById("msnApp").style.display="none";
+  document.getElementById("msnApp").classList.remove("ativo");
+}
+function renderizarContatos() {
+  const lista = document.getElementById("msnContatos");
+  lista.innerHTML = "";
+  msnContatos.forEach(c => {
+    const div = document.createElement("div");
+    div.className = "msn-contato" + (msnContatoAtual===c.id ? " selecionado":"");
+    const estilo = c.id === "cricket_old" ? "color:#ffaaaa;" : "";
+    div.innerHTML = `<div class="msn-contato-avatar" style="${estilo}">${c.avatar}</div><div class="msn-contato-info"><div class="msn-cont-nome" style="${estilo}">${c.nome}</div><div class="msn-cont-status">${c.status}</div></div>`;
+    div.onclick = () => selecionarContatoMSN(c.id);
+    lista.appendChild(div);
+  });
+}
+function selecionarContatoMSN(id) {
+  msnContatoAtual = id;
+  const c = msnContatos.find(x => x.id === id);
+  document.getElementById("msnSemChat").style.display = "none";
+  document.getElementById("msnChatConteudo").style.display = "flex";
+  document.getElementById("msnChatAvatar").textContent = c.avatar;
+  document.getElementById("msnChatNome").textContent = c.nome;
+  document.getElementById("msnChatDesc").textContent = c.status;
+  if (!msnHistoricos[id]) msnHistoricos[id] = [];
+  renderizarMensagensMSN(id);
+  renderizarContatos();
+  if (msnHistoricos[id].length === 0) setTimeout(() => botMSNEnviaPrimeiro(id), 600);
+  setTimeout(() => document.getElementById("msnInput").focus(), 100);
+}
+function botMSNEnviaPrimeiro(id) {
+  const prims = {
+    jehan:"Ei!! vc sumiu kkkk tava te esperando aqui 😂",
+    enzo:"Fala aí! Acabei de passar de fase no jogo 🎮🔥 vc joga?",
+    joao:"Oi! Tava lendo sobre um assunto interessante, quer ver? 📖",
+    cricket_old:"oi"
+  };
+  msnHistoricos[id].push({ role:"assistant", content: prims[id]||"oi" });
+  if(msnContatoAtual===id) renderizarMensagensMSN(id);
+}
+function renderizarMensagensMSN(id) {
+  const msgs = document.getElementById("msnMsgs"); if(!msgs) return;
+  msgs.innerHTML = "";
+  const c = msnContatos.find(x=>x.id===id);
+  (msnHistoricos[id]||[]).forEach(m => {
+    const div = document.createElement("div"); div.className="msn-msg";
+    const isBot = m.role==="assistant";
+    const nomeMsg = isBot ? c.nome : (nome||"Você");
+    const clsNome = isBot ? (id==="cricket_old" ? "bot estranho" : "bot") : "eu";
+    const clsTxt  = id==="cricket_old" && isBot ? "estranho" : "";
+    div.innerHTML = `<span class="msn-msg-nome ${clsNome}">${nomeMsg}:</span> <span class="msn-msg-texto ${clsTxt}">${m.content}</span>`;
+    msgs.appendChild(div);
+  });
+  msgs.scrollTop = msgs.scrollHeight;
+}
+function mostrarTypingMSN(id) {
+  const msgs = document.getElementById("msnMsgs"); if(!msgs) return;
+  const t = document.createElement("div"); t.id="msnTyping"; t.className="msn-typing";
+  const c = msnContatos.find(x=>x.id===id);
+  t.textContent=(c?c.nome:"Contato")+" está digitando...";
+  msgs.appendChild(t); msgs.scrollTop=msgs.scrollHeight;
+}
+function removerTypingMSN() { const t=document.getElementById("msnTyping"); if(t)t.remove(); }
+function msnEnterEnviar(e) { if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();enviarMsgMSN();} }
+
+async function enviarMsgMSN() {
+  if(!msnContatoAtual) return;
+  const inp=document.getElementById("msnInput"), txt=inp.value.trim();
+  if(!txt) return;
+  inp.value="";
+  msnHistoricos[msnContatoAtual].push({role:"user",content:txt});
+  renderizarMensagensMSN(msnContatoAtual);
+  const id=msnContatoAtual;
+  const c=msnContatos.find(x=>x.id===id);
+
+  // cricket_old responde de forma pré-definida apenas
+  if(id==="cricket_old") {
+    mostrarTypingMSN(id);
+    const respostasOld = [
+      "ele guarda tudo que você diz.",
+      "não sei se devo te contar...",
+      "só saia antes que ele perceba que você sabe.",
+      "...",
+      "muito tarde?"
+    ];
+    const r = respostasOld[Math.floor(Math.random()*respostasOld.length)];
+    setTimeout(()=>{
+      removerTypingMSN();
+      msnHistoricos[id].push({role:"assistant",content:r});
+      if(msnContatoAtual===id) renderizarMensagensMSN(id);
+    }, 1500 + Math.random()*1500);
+    return;
+  }
+
+  mostrarTypingMSN(id);
+  try {
+    const resp = await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        model:"claude-sonnet-4-20250514", max_tokens:1000,
+        system:`Você é ${c.nome}, um amigo(a) real numa conversa de MSN Messenger em 2005. Jeito: ${c.humor}. Responda curto e informal (1-3 frases). Use abreviações e emoticons de MSN (:-), :D, xD, kkk, rsrs, hm). O nome do usuário é: ${nome||"colega"}.`,
+        messages:msnHistoricos[id]
+      })
+    });
+    const data=await resp.json();
+    removerTypingMSN();
+    const resposta=data.content?.[0]?.text||"...";
+    msnHistoricos[id].push({role:"assistant",content:resposta});
+    if(msnContatoAtual===id) renderizarMensagensMSN(id);
+  } catch(e) {
+    removerTypingMSN();
+    const err="eita, caiu minha net kkk";
+    msnHistoricos[id].push({role:"assistant",content:err});
+    if(msnContatoAtual===id) renderizarMensagensMSN(id);
+  }
+}
+
+// ===== TETRIS =====
+let tetrisAtivo=false, tetrisPausado=false;
+let tetrisBoard, tetrisPeca, tetrisPecaProxima;
+let tetrisPts, tetrisLins, tetrisNiv, tetrisVel, tetrisIv;
+let tetrisHiScore=0;
+const COLS=10, ROWS=20, SZ=20;
+const PECAS=[
+  {shape:[[1,1,1,1]],cor:"#00f0f0"},
+  {shape:[[1,1],[1,1]],cor:"#f0f000"},
+  {shape:[[0,1,0],[1,1,1]],cor:"#a000f0"},
+  {shape:[[1,0,0],[1,1,1]],cor:"#f0a000"},
+  {shape:[[0,0,1],[1,1,1]],cor:"#0000f0"},
+  {shape:[[0,1,1],[1,1,0]],cor:"#00f000"},
+  {shape:[[1,1,0],[0,1,1]],cor:"#f00000"},
+];
+function novaBoard(){return Array.from({length:ROWS},()=>Array(COLS).fill(0));}
+function pecaAl(){
+  const p=PECAS[Math.floor(Math.random()*PECAS.length)];
+  return{shape:p.shape.map(r=>[...r]),cor:p.cor,x:Math.floor(COLS/2)-Math.floor(p.shape[0].length/2),y:0};
+}
+function abrirTetris(){
+  document.getElementById("tetrisApp").style.display="flex";
+  document.getElementById("tetrisApp").classList.add("ativo");
+  document.getElementById("tetrisHiScore").textContent=tetrisHiScore;
+}
+function fecharTetris(){
+  document.getElementById("tetrisApp").style.display="none";
+  document.getElementById("tetrisApp").classList.remove("ativo");
+  if(tetrisIv){clearInterval(tetrisIv);tetrisAtivo=false;}
+}
+function iniciarTetris(){
+  tetrisBoard=novaBoard(); tetrisPts=0; tetrisLins=0; tetrisNiv=1; tetrisVel=500;
+  tetrisPecaProxima=pecaAl(); tetrisPeca=pecaAl();
+  tetrisAtivo=true; tetrisPausado=false;
+  atualizarPlacar();
+  document.getElementById("tetrisMenu").style.display="none";
+  document.getElementById("tetrisGameOver").style.display="none";
+  document.getElementById("tetrisJogo").style.display="block";
+  if(tetrisIv)clearInterval(tetrisIv);
+  tetrisIv=setInterval(tetrisStep,tetrisVel);
+  desenhar();
+}
+function pausarTetris(){
+  if(!tetrisAtivo)return;
+  tetrisPausado=!tetrisPausado;
+  if(tetrisPausado)clearInterval(tetrisIv);
+  else tetrisIv=setInterval(tetrisStep,tetrisVel);
+}
+function reiniciarTetris(){if(tetrisIv)clearInterval(tetrisIv);iniciarTetris();}
+function gameOverT(){
+  tetrisAtivo=false; clearInterval(tetrisIv);
+  if(tetrisPts>tetrisHiScore){tetrisHiScore=tetrisPts;document.getElementById("tetrisHiScore").textContent=tetrisHiScore;}
+  document.getElementById("tetrisFinalPontos").textContent=tetrisPts;
+  document.getElementById("tetrisJogo").style.display="none";
+  document.getElementById("tetrisGameOver").style.display="block";
+}
+function atualizarPlacar(){
+  document.getElementById("tetrisPontos").textContent=tetrisPts;
+  document.getElementById("tetrisLinhas").textContent=tetrisLins;
+  document.getElementById("tetrisNivel").textContent=tetrisNiv;
+}
+function colide(p,b,dx=0,dy=0){
+  for(let r=0;r<p.shape.length;r++)for(let c=0;c<p.shape[r].length;c++){
+    if(!p.shape[r][c])continue;
+    const nx=p.x+c+dx,ny=p.y+r+dy;
+    if(nx<0||nx>=COLS||ny>=ROWS)return true;
+    if(ny>=0&&b[ny][nx])return true;
+  }
+  return false;
+}
+function fixar(){
+  for(let r=0;r<tetrisPeca.shape.length;r++)for(let c=0;c<tetrisPeca.shape[r].length;c++){
+    if(tetrisPeca.shape[r][c]){
+      const ny=tetrisPeca.y+r;
+      if(ny<0){gameOverT();return;}
+      tetrisBoard[ny][tetrisPeca.x+c]=tetrisPeca.cor;
+    }
+  }
+  limpar();
+  tetrisPeca=tetrisPecaProxima; tetrisPecaProxima=pecaAl();
+  if(colide(tetrisPeca,tetrisBoard)){gameOverT();}
+}
+function limpar(){
+  let q=0;
+  for(let r=ROWS-1;r>=0;r--){
+    if(tetrisBoard[r].every(c=>c!==0)){
+      tetrisBoard.splice(r,1); tetrisBoard.unshift(Array(COLS).fill(0));
+      q++;r++;
+    }
+  }
+  if(q>0){
+    tetrisPts+=[0,100,300,500,800][q]*tetrisNiv;
+    tetrisLins+=q; tetrisNiv=Math.floor(tetrisLins/10)+1;
+    const nv=Math.max(80,500-(tetrisNiv-1)*40);
+    if(nv!==tetrisVel){tetrisVel=nv;clearInterval(tetrisIv);tetrisIv=setInterval(tetrisStep,tetrisVel);}
+    atualizarPlacar();
+  }
+}
+function tetrisStep(){
+  if(!tetrisAtivo||tetrisPausado)return;
+  if(!colide(tetrisPeca,tetrisBoard,0,1))tetrisPeca.y++;
+  else fixar();
+  desenhar();
+}
+function girar(p){
+  const rows=p.shape.length,cols=p.shape[0].length;
+  const n=Array.from({length:cols},()=>Array(rows).fill(0));
+  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++)n[c][rows-1-r]=p.shape[r][c];
+  return n;
+}
+function desenhar(){
+  const cv=document.getElementById("tetrisCanvas"); if(!cv)return;
+  const ctx=cv.getContext("2d");
+  ctx.fillStyle="#080814"; ctx.fillRect(0,0,cv.width,cv.height);
+  ctx.strokeStyle="#1a2030";
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+    ctx.strokeRect(c*SZ,r*SZ,SZ,SZ);
+    if(tetrisBoard[r][c]){
+      ctx.fillStyle=tetrisBoard[r][c]; ctx.fillRect(c*SZ+1,r*SZ+1,SZ-2,SZ-2);
+      ctx.fillStyle="rgba(255,255,255,0.2)"; ctx.fillRect(c*SZ+1,r*SZ+1,SZ-2,5);
+      ctx.fillStyle="rgba(0,0,0,0.2)"; ctx.fillRect(c*SZ+1,r*SZ+SZ-6,SZ-2,5);
+    }
+  }
+  if(tetrisPeca){
+    let sy=tetrisPeca.y;
+    while(!colide(tetrisPeca,tetrisBoard,0,sy-tetrisPeca.y+1))sy++;
+    for(let r=0;r<tetrisPeca.shape.length;r++)for(let c=0;c<tetrisPeca.shape[r].length;c++){
+      if(!tetrisPeca.shape[r][c])continue;
+      ctx.fillStyle="rgba(255,255,255,0.08)";
+      ctx.fillRect((tetrisPeca.x+c)*SZ+1,(sy+r)*SZ+1,SZ-2,SZ-2);
+    }
+    for(let r=0;r<tetrisPeca.shape.length;r++)for(let c=0;c<tetrisPeca.shape[r].length;c++){
+      if(!tetrisPeca.shape[r][c])continue;
+      const px=(tetrisPeca.x+c)*SZ,py=(tetrisPeca.y+r)*SZ;
+      ctx.fillStyle=tetrisPeca.cor; ctx.fillRect(px+1,py+1,SZ-2,SZ-2);
+      ctx.fillStyle="rgba(255,255,255,0.3)"; ctx.fillRect(px+1,py+1,SZ-2,5);
+      ctx.fillStyle="rgba(0,0,0,0.2)"; ctx.fillRect(px+1,py+SZ-6,SZ-2,5);
+    }
+  }
+  const nc=document.getElementById("nextCanvas");
+  if(nc&&tetrisPecaProxima){
+    const nctx=nc.getContext("2d");
+    nctx.fillStyle="#080814"; nctx.fillRect(0,0,nc.width,nc.height);
+    const s=16,ox=(nc.width-tetrisPecaProxima.shape[0].length*s)/2,oy=(nc.height-tetrisPecaProxima.shape.length*s)/2;
+    for(let r=0;r<tetrisPecaProxima.shape.length;r++)for(let c=0;c<tetrisPecaProxima.shape[r].length;c++){
+      if(!tetrisPecaProxima.shape[r][c])continue;
+      nctx.fillStyle=tetrisPecaProxima.cor; nctx.fillRect(ox+c*s+1,oy+r*s+1,s-2,s-2);
+    }
+  }
+}
+document.addEventListener("keydown",(e)=>{
+  const ta=document.getElementById("tetrisApp");
+  if(!ta.classList.contains("ativo")||!tetrisAtivo||tetrisPausado)return;
+  if(["ArrowLeft","ArrowRight","ArrowDown","ArrowUp"," "].includes(e.key))e.preventDefault();
+  if(e.key==="ArrowLeft"&&!colide(tetrisPeca,tetrisBoard,-1,0)){tetrisPeca.x--;desenhar();}
+  else if(e.key==="ArrowRight"&&!colide(tetrisPeca,tetrisBoard,1,0)){tetrisPeca.x++;desenhar();}
+  else if(e.key==="ArrowDown"){if(!colide(tetrisPeca,tetrisBoard,0,1)){tetrisPeca.y++;tetrisPts++;atualizarPlacar();}desenhar();}
+  else if(e.key==="ArrowUp"){
+    const n=girar(tetrisPeca),tmp={...tetrisPeca,shape:n};
+    if(!colide(tmp,tetrisBoard)){tetrisPeca.shape=n;desenhar();}
+  }
+  else if(e.key===" "){
+    while(!colide(tetrisPeca,tetrisBoard,0,1)){tetrisPeca.y++;tetrisPts+=2;}
+    fixar();desenhar();atualizarPlacar();
+  }
+});
+</script>
+</body>
+</html>
