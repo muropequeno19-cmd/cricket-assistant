@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta name="google-site-verification" content="fulim5NIVPsVz1OJeXVc0RN9MsLP6KUfNkX0EAwUZjQ" />
   <meta charset="UTF-8">
   <title>CRICKET ASSISTANT</title>
   <link href="https://fonts.googleapis.com/css2?family=Tahoma&display=swap" rel="stylesheet">
@@ -20,26 +19,80 @@
       user-select: none;
     }
 
-    /* ===== ESTILO WINDOWS XP AERO ===== */
+    /* ===== BOOT / INTRO ===== */
+    #bootScreen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #000;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 60px;
+      font-family: 'Courier New', monospace;
+    }
+    #bootText {
+      color: #ccc;
+      font-size: 13px;
+      line-height: 1.8;
+      white-space: pre;
+    }
+    #xpSplash {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #000;
+      z-index: 9998;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+    }
+    .xp-logo-wrap { text-align: center; }
+    .xp-logo-flag { font-size: 64px; margin-bottom: 8px; }
+    .xp-logo-text {
+      font-size: 36px;
+      font-weight: 900;
+      font-family: Arial, sans-serif;
+      letter-spacing: 2px;
+    }
+    .xp-logo-text span:nth-child(1) { color: #e74c3c; }
+    .xp-logo-text span:nth-child(2) { color: #27ae60; }
+    .xp-logo-text span:nth-child(3) { color: #3498db; }
+    .xp-logo-text span:nth-child(4) { color: #f39c12; }
+    .xp-logo-text span:nth-child(5) { color: #ecf0f1; }
+    .xp-logo-text span:nth-child(6) { color: #ecf0f1; }
+    .xp-logo-text span:nth-child(7) { color: #ecf0f1; }
+    .xp-logo-sub { color: #aaa; font-size: 13px; margin-top: 6px; font-family: Arial, sans-serif; }
+    .xp-progress-bg {
+      width: 220px;
+      height: 14px;
+      background: #222;
+      border-radius: 7px;
+      overflow: hidden;
+      border: 1px solid #444;
+    }
+    #xpProgressBar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #1a6bd6, #4da8ff);
+      border-radius: 7px;
+      transition: width 0.1s;
+    }
+
+    /* ===== JANELA XP ===== */
     .janela-xp {
       border-radius: 8px 8px 4px 4px;
       border: 1px solid #0a3794;
-      box-shadow:
-        0 0 0 1px #5b9bd5,
-        2px 2px 0 1px #0a3794,
-        4px 8px 20px rgba(0,0,0,0.6);
+      box-shadow: 0 0 0 1px #5b9bd5, 2px 2px 0 1px #0a3794, 4px 8px 20px rgba(0,0,0,0.6);
       overflow: hidden;
       background: #ece9d8;
     }
-
     .barra-titulo {
-      background:
-        linear-gradient(180deg,
-          #4d9de0 0%,
-          #1a6bbf 8%,
-          #1560b5 40%,
-          #1254a8 88%,
-          #0e3f8a 100%);
+      background: linear-gradient(180deg, #4d9de0 0%, #1a6bbf 8%, #1560b5 40%, #1254a8 88%, #0e3f8a 100%);
       color: white;
       padding: 4px 6px 5px;
       display: flex;
@@ -49,44 +102,21 @@
       font-weight: 700;
       min-height: 28px;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
-      letter-spacing: 0.2px;
     }
-
-    .titulo-esquerda {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
+    .titulo-esquerda { display: flex; align-items: center; gap: 5px; }
     .titulo-icone { font-size: 14px; }
-
-    .titulo-botoes {
-      display: flex;
-      gap: 2px;
-      align-items: center;
-    }
-
+    .titulo-botoes { display: flex; gap: 2px; align-items: center; }
     .btn-titulo {
-      width: 21px;
-      height: 21px;
+      width: 21px; height: 21px;
       border-radius: 3px;
       border: 1px solid rgba(255,255,255,0.4);
       cursor: pointer;
-      font-size: 10px;
-      font-weight: 900;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 1;
+      font-size: 10px; font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
       color: white;
       text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
     }
-
-    .btn-min {
-      background: linear-gradient(180deg, #6eb4f0 0%, #3d90d8 50%, #2878c0 100%);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
-    }
-    .btn-max {
+    .btn-min, .btn-max {
       background: linear-gradient(180deg, #6eb4f0 0%, #3d90d8 50%, #2878c0 100%);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
     }
@@ -94,164 +124,37 @@
       background: linear-gradient(180deg, #f07070 0%, #d42020 40%, #c00000 100%);
       box-shadow: inset 0 1px 0 rgba(255,180,180,0.5);
       border-color: #8b0000;
-      font-size: 11px;
     }
     .btn-titulo:hover { filter: brightness(1.15); }
     .btn-titulo:active { filter: brightness(0.9); transform: scale(0.96); }
-
     .menu-bar {
       background: linear-gradient(180deg, #f0efe4 0%, #e8e7d8 100%);
       padding: 2px 4px;
       font-size: 11px;
       border-bottom: 1px solid #aca899;
       color: #000;
-      display: flex;
-      gap: 2px;
+      display: flex; gap: 2px;
     }
-    .menu-item {
-      padding: 2px 6px;
-      border-radius: 3px;
-      cursor: pointer;
-    }
+    .menu-item { padding: 2px 6px; border-radius: 3px; cursor: pointer; }
     .menu-item:hover { background: #0a246a; color: white; }
 
-    /* DESKTOP */
-    #desktop {
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      align-items: flex-start;
-    }
-
-    .icon {
-      width: 72px;
-      text-align: center;
-      cursor: pointer;
-      padding: 4px;
-      border-radius: 4px;
-      transition: background 0.1s;
-    }
-    .icon:hover {
-      background: rgba(0,60,180,0.3);
-      outline: 1px dashed rgba(255,255,255,0.6);
-    }
-    .icon:active { transform: scale(0.96); }
-
-    .icon-img-wrap {
-      width: 48px;
-      height: 48px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 32px;
-    }
-    .icon-img-wrap img { width: 48px; height: 48px; object-fit: contain; }
-
-    .icon span {
-      display: block;
-      color: white;
-      font-size: 11px;
-      font-weight: 700;
-      margin-top: 3px;
-      text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
-      line-height: 1.3;
-    }
-    .icon.selecionado { background: rgba(0,60,180,0.4); outline: 1px dashed white; }
-
-    /* BLOCO DE NOTAS */
-    #janela {
-      position: absolute;
-      top: 80px;
-      left: 120px;
-      width: 340px;
-      z-index: 50;
-    }
-    #janela textarea {
-      width: 100%;
-      height: 180px;
-      border: none;
-      resize: none;
-      font-family: 'Courier New', monospace;
-      font-size: 12px;
-      padding: 6px;
-      background: white;
-      outline: none;
-      color: #000;
-    }
-    .hidden { display: none !important; }
-
-    /* OVERLAY GERAL */
-    .overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      background: rgba(0,0,60,0.45);
-      z-index: 100;
-    }
-    .overlay.ativo { display: flex; animation: popIn 0.2s ease; }
-
-    /* GOOGLE */
-    #googleContainer { width: 540px; }
-    .google-body {
-      padding: 28px 36px 24px;
-      text-align: center;
-      background: white;
-    }
-    .google-logo {
-      font-size: 48px;
-      font-weight: 900;
-      font-family: Arial, sans-serif;
-      letter-spacing: -2px;
-      margin-bottom: 18px;
-      background: linear-gradient(90deg, #4285F4, #EA4335, #FBBC05, #34A853);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .google-search-row { display: flex; gap: 6px; justify-content: center; margin-bottom: 8px; }
-    #pesquisa {
-      width: 300px;
-      padding: 7px 14px;
-      border-radius: 20px;
-      border: 1px solid #ccc;
-      font-size: 13px;
-      font-family: Arial, sans-serif;
-      outline: none;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-    }
-    #pesquisa:focus { border-color: #4285F4; box-shadow: 0 0 5px rgba(66,133,244,0.4); }
-    .google-dica { font-size: 11px; color: #888; margin-top: 6px; font-family: Arial, sans-serif; }
-
-    /* BOTÕES XP */
+    /* BOTÕES */
     .btn-xp {
       padding: 4px 16px;
-      font-family: 'Tahoma', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      border-radius: 3px;
+      font-family: 'Tahoma', sans-serif; font-size: 11px; font-weight: 700;
+      cursor: pointer; border-radius: 3px;
       border: 1px solid #003c74;
       background: linear-gradient(180deg, #f0f4fc 0%, #dce8f8 40%, #c0d8f4 70%, #b0cce8 100%);
       color: #000;
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 1px 2px rgba(0,0,0,0.2);
-      transition: filter 0.1s;
       min-height: 23px;
     }
     .btn-xp:hover { background: linear-gradient(180deg, #e0eeff 0%, #c8dcf8 40%, #a8ccf0 70%, #98bce4 100%); }
-    .btn-xp:active { background: linear-gradient(180deg, #b0cce8 0%, #c0d8f4 100%); transform: scale(0.98); }
-
+    .btn-xp:active { transform: scale(0.98); }
     .btn-xp-verde {
       padding: 4px 16px;
-      font-family: 'Tahoma', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      border-radius: 3px;
+      font-family: 'Tahoma', sans-serif; font-size: 11px; font-weight: 700;
+      cursor: pointer; border-radius: 3px;
       border: 1px solid #2a6000;
       background: linear-gradient(180deg, #c8f0a0 0%, #a8d870 40%, #80c040 70%, #60a820 100%);
       color: #000;
@@ -261,368 +164,293 @@
     .btn-xp-verde:hover { filter: brightness(1.1); }
     .btn-xp-verde:active { transform: scale(0.98); }
 
+    /* DESKTOP */
+    #desktop {
+      padding: 14px;
+      display: flex; flex-direction: column;
+      gap: 10px; align-items: flex-start;
+    }
+    .icon {
+      width: 72px; text-align: center;
+      cursor: pointer; padding: 4px; border-radius: 4px;
+      transition: background 0.1s;
+    }
+    .icon:hover { background: rgba(0,60,180,0.3); outline: 1px dashed rgba(255,255,255,0.6); }
+    .icon:active { transform: scale(0.96); }
+    .icon-img-wrap {
+      width: 48px; height: 48px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: center; font-size: 32px;
+    }
+    .icon-img-wrap img { width: 48px; height: 48px; object-fit: contain; }
+    .icon span {
+      display: block; color: white; font-size: 11px; font-weight: 700;
+      margin-top: 3px;
+      text-shadow: 1px 1px 0 #000,-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000;
+      line-height: 1.3;
+    }
+
+    /* OVERLAY */
+    .overlay {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: none; justify-content: center; align-items: center;
+      background: rgba(0,0,60,0.45); z-index: 100;
+    }
+    .overlay.ativo { display: flex; animation: popIn 0.2s ease; }
+
+    /* BLOCO DE NOTAS */
+    #janela { position: absolute; top: 80px; left: 120px; width: 340px; z-index: 50; }
+    #janela textarea {
+      width: 100%; height: 180px; border: none; resize: none;
+      font-family: 'Courier New', monospace; font-size: 12px;
+      padding: 6px; background: white; outline: none; color: #000;
+    }
+    .hidden { display: none !important; }
+
+    /* GOOGLE */
+    #googleContainer { width: 640px; }
+    .ie-toolbar {
+      background: linear-gradient(180deg, #f0efe4, #dddcd0);
+      padding: 4px 8px;
+      border-bottom: 1px solid #aca899;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .ie-addr-bar {
+      flex: 1; padding: 3px 8px;
+      border: 2px inset #aaa;
+      font-family: 'Tahoma', sans-serif; font-size: 11px;
+      background: white; color: #000;
+    }
+    .google-body { padding: 24px 32px 20px; text-align: center; background: white; }
+    .google-logo {
+      font-size: 52px; font-weight: 900;
+      font-family: Arial, sans-serif;
+      letter-spacing: -2px; margin-bottom: 16px;
+    }
+    .google-logo span:nth-child(1) { color: #4285F4; }
+    .google-logo span:nth-child(2) { color: #EA4335; }
+    .google-logo span:nth-child(3) { color: #FBBC05; }
+    .google-logo span:nth-child(4) { color: #4285F4; }
+    .google-logo span:nth-child(5) { color: #34A853; }
+    .google-logo span:nth-child(6) { color: #EA4335; }
+    .google-search-row { display: flex; gap: 6px; justify-content: center; margin-bottom: 8px; }
+    #pesquisa {
+      width: 380px; padding: 7px 14px;
+      border: 1px solid #ccc; border-radius: 20px;
+      font-size: 13px; font-family: Arial, sans-serif; outline: none;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+    #pesquisa:focus { border-color: #4285F4; box-shadow: 0 0 5px rgba(66,133,244,0.4); }
+
+    /* PÁGINA DE RESULTADOS DO GOOGLE */
+    #googleResultados { width: 700px; max-height: 85vh; display: flex; flex-direction: column; }
+    .google-resultados-body {
+      background: white; padding: 12px 20px;
+      overflow-y: auto; flex: 1;
+    }
+    .google-res-header {
+      display: flex; align-items: center; gap: 12px;
+      padding-bottom: 10px; border-bottom: 1px solid #eee; margin-bottom: 12px;
+    }
+    .google-res-logo { font-size: 24px; font-weight: 900; font-family: Arial, sans-serif; }
+    .google-res-logo span:nth-child(1){color:#4285F4}
+    .google-res-logo span:nth-child(2){color:#EA4335}
+    .google-res-logo span:nth-child(3){color:#FBBC05}
+    .google-res-logo span:nth-child(4){color:#4285F4}
+    .google-res-logo span:nth-child(5){color:#34A853}
+    .google-res-logo span:nth-child(6){color:#EA4335}
+    .google-res-input {
+      flex: 1; padding: 6px 14px;
+      border: 1px solid #ccc; border-radius: 20px;
+      font-size: 12px; font-family: Arial, sans-serif; outline: none;
+    }
+    .google-res-qtd { font-size: 11px; color: #666; margin-bottom: 14px; font-family: Arial, sans-serif; }
+    .google-resultado {
+      margin-bottom: 20px; padding-bottom: 16px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .google-res-url { font-size: 11px; color: #006621; margin-bottom: 2px; font-family: Arial, sans-serif; }
+    .google-res-titulo {
+      font-size: 16px; color: #1a0dab; cursor: pointer;
+      font-family: Arial, sans-serif; margin-bottom: 3px; text-decoration: none;
+      display: block;
+    }
+    .google-res-titulo:hover { text-decoration: underline; }
+    .google-res-desc { font-size: 12px; color: #545454; line-height: 1.5; font-family: Arial, sans-serif; }
+    .google-loading {
+      text-align: center; padding: 40px;
+      font-family: Arial, sans-serif; font-size: 13px; color: #666;
+    }
+    .google-spinner {
+      width: 32px; height: 32px;
+      border: 3px solid #f0f0f0;
+      border-top-color: #4285F4;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 12px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
     /* SITE DO GRILO */
-    .site-janela { width: 600px; }
+    .site-janela { width: 580px; }
     .site-body { background: white; }
     .site-header {
       background: linear-gradient(135deg, #1a6800, #4caf50, #80c850);
-      padding: 18px 24px;
-      text-align: center;
-      color: white;
+      padding: 18px 24px; text-align: center; color: white;
       border-bottom: 2px solid #2a8000;
     }
-    .site-logo {
-      font-size: 28px;
-      font-weight: 900;
-      text-shadow: 2px 2px 0 rgba(0,0,0,0.4), 0 0 10px rgba(255,255,255,0.3);
-      font-family: Arial, sans-serif;
-    }
+    .site-logo { font-size: 28px; font-weight: 900; text-shadow: 2px 2px 0 rgba(0,0,0,0.4); font-family: Arial, sans-serif; }
     .site-slogan { font-size: 12px; margin: 4px 0 0; opacity: 0.9; }
     .site-content { display: flex; gap: 12px; padding: 16px; }
     .site-box {
-      flex: 1;
-      background: #f4f4f0;
-      border: 1px solid #d0d0c0;
-      border-radius: 4px;
-      padding: 12px;
-      font-size: 11px;
-      line-height: 1.6;
+      flex: 1; background: #f4f4f0;
+      border: 1px solid #d0d0c0; border-radius: 4px;
+      padding: 12px; font-size: 11px; line-height: 1.6;
     }
     .site-box.destaque { background: #e8f5e0; border-color: #80c050; text-align: center; }
     .site-box h3 { margin: 0 0 6px; font-size: 12px; color: #1a6800; }
     #downloadBtn {
       background: linear-gradient(180deg, #c8f090 0%, #80c840 40%, #50a010 100%);
-      color: #000;
-      border: 2px solid #2a6000;
-      border-radius: 4px;
-      padding: 8px 20px;
-      font-family: 'Tahoma', sans-serif;
-      font-size: 13px;
-      font-weight: 900;
-      cursor: pointer;
-      margin-top: 8px;
+      color: #000; border: 2px solid #2a6000; border-radius: 4px;
+      padding: 8px 20px; font-family: 'Tahoma', sans-serif;
+      font-size: 13px; font-weight: 900; cursor: pointer; margin-top: 8px;
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 2px 4px rgba(0,0,0,0.3);
     }
     #downloadBtn:hover { filter: brightness(1.08); }
 
+    /* ANÚNCIO POP-UP */
+    .anuncio-popup {
+      position: fixed;
+      z-index: 800;
+      width: 300px;
+      animation: popIn 0.2s ease;
+    }
+    .anuncio-body {
+      background: linear-gradient(180deg, #fffde0, #fff8c0);
+      padding: 14px 16px; text-align: center;
+      border: 2px solid #f0d000;
+      font-size: 11px; line-height: 1.6;
+    }
+    .anuncio-titulo { font-size: 14px; font-weight: 900; color: #2a6800; margin-bottom: 6px; }
+    .anuncio-fechar { position: absolute; top: 4px; right: 4px; }
+
+    /* TELA AZUL */
+    #telaAzul {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #0000aa;
+      z-index: 5000;
+      display: none;
+      padding: 40px 60px;
+      font-family: 'Courier New', monospace;
+      color: white;
+    }
+    .bsod-header { background: #aaaaaa; color: #0000aa; padding: 2px 8px; font-size: 14px; font-weight: 900; display: inline-block; margin-bottom: 20px; }
+    .bsod-texto { font-size: 13px; line-height: 2; }
+
     /* DIÁLOGO */
     .dialogo-janela { width: 320px; }
-    .dialogo-corpo {
-      background: white;
-      padding: 18px 20px 20px;
-      text-align: center;
-    }
-    .grilo-avatar {
-      font-size: 48px;
-      margin-bottom: 8px;
-      animation: pulse 2s infinite ease-in-out;
-    }
+    .dialogo-corpo { background: white; padding: 18px 20px 20px; text-align: center; }
+    .grilo-avatar { font-size: 48px; margin-bottom: 8px; animation: pulse 2s infinite ease-in-out; }
     @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
-
     #dialogoPergunta {
-      font-size: 12px;
-      font-weight: 700;
-      color: #1a3a1a;
-      margin: 0 0 12px;
-      min-height: 36px;
-      line-height: 1.5;
-      white-space: pre-line;
+      font-size: 12px; font-weight: 700; color: #1a3a1a;
+      margin: 0 0 12px; min-height: 36px; line-height: 1.5; white-space: pre-line;
     }
     #dialogoInput {
-      width: 100%;
-      padding: 5px 8px;
-      border: 2px solid #7ec870;
-      border-radius: 3px;
-      font-family: 'Tahoma', sans-serif;
-      font-size: 11px;
-      outline: none;
-      margin-bottom: 10px;
-      background: white;
+      width: 100%; padding: 5px 8px;
+      border: 2px solid #7ec870; border-radius: 3px;
+      font-family: 'Tahoma', sans-serif; font-size: 11px; outline: none;
+      margin-bottom: 10px; background: white;
       box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
     }
-    #dialogoInput:focus { border-color: #2a8000; box-shadow: 0 0 4px rgba(80,180,0,0.4); }
+    #dialogoInput:focus { border-color: #2a8000; }
 
-    /* DOWNLOAD PROGRESS */
+    /* DOWNLOAD */
     .progress-janela { width: 320px; }
-    .progress-corpo {
-      background: #ece9d8;
-      padding: 14px 18px;
-      text-align: center;
-      font-size: 11px;
-    }
+    .progress-corpo { background: #ece9d8; padding: 14px 18px; text-align: center; font-size: 11px; }
     .progress-bar-bg {
-      background: #c8c4b4;
-      border: 1px solid #888;
-      border-radius: 2px;
-      height: 20px;
-      margin: 8px 0 5px;
-      overflow: hidden;
-      box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+      background: #c8c4b4; border: 1px solid #888; border-radius: 2px;
+      height: 20px; margin: 8px 0 5px; overflow: hidden;
     }
     #progressBar {
-      height: 100%;
-      width: 0%;
+      height: 100%; width: 0%;
       background: linear-gradient(180deg, #78d848 0%, #40a000 50%, #309000 100%);
-      transition: width 0.08s;
-      position: relative;
-      overflow: hidden;
+      transition: width 0.08s; position: relative; overflow: hidden;
     }
     #progressBar::after {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 60%;
-      height: 100%;
+      content:''; position:absolute; top:0; left:-100%;
+      width:60%; height:100%;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
       animation: shimmer 1s infinite;
     }
     @keyframes shimmer { to { left: 200%; } }
     #progressText { font-weight: 700; color: #333; font-size: 11px; }
 
-    /* PET GRILO */
+    /* PET */
     #petWrap {
-      position: fixed;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      z-index: 150;
-      pointer-events: all;
+      position: fixed; display: none;
+      flex-direction: column; align-items: center;
+      z-index: 150; pointer-events: all;
     }
-
     #fala {
-      background: white;
-      border: 2px solid #7ec870;
-      border-radius: 10px;
-      padding: 8px 12px;
-      font-size: 11px;
-      font-weight: 700;
-      color: #1a3a1a;
-      max-width: 180px;
-      text-align: center;
-      margin-bottom: 6px;
+      background: white; border: 2px solid #7ec870;
+      border-radius: 10px; padding: 8px 12px;
+      font-size: 11px; font-weight: 700; color: #1a3a1a;
+      max-width: 180px; text-align: center; margin-bottom: 6px;
       position: relative;
       box-shadow: 2px 2px 6px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.8);
-      line-height: 1.4;
-      display: none;
+      line-height: 1.4; display: none;
     }
-    /* fala sombria — borda vermelha */
-    #fala.sombria {
-      border-color: #c00;
-      color: #5a0000;
-      animation: tremido 0.3s ease;
-    }
-    @keyframes tremido {
-      0%,100%{transform:translateX(0)} 25%{transform:translateX(-3px)} 75%{transform:translateX(3px)}
-    }
+    #fala.sombria { border-color: #c00; color: #5a0000; animation: tremido 0.3s ease; }
+    @keyframes tremido { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-3px)} 75%{transform:translateX(3px)} }
     #fala::after {
-      content: '';
-      position: absolute;
-      bottom: -9px;
-      left: 50%;
-      transform: translateX(-50%);
-      border: 9px solid transparent;
-      border-top-color: white;
-      border-bottom: none;
+      content:''; position:absolute; bottom:-9px; left:50%; transform:translateX(-50%);
+      border:9px solid transparent; border-top-color:white; border-bottom:none;
     }
-    #fala.sombria::after { border-top-color: #5a0000; }
+    #fala.sombria::after { border-top-color:#5a0000; }
 
     /* CHAT DO GRILO */
-    #griloChat {
-      position: fixed;
-      width: 270px;
-      display: none;
-      z-index: 300;
-    }
+    #griloChat { position: fixed; width: 270px; display: none; z-index: 300; }
     .grilo-chat-msgs {
-      background: white;
-      height: 190px;
-      overflow-y: auto;
-      padding: 8px;
-      font-size: 11px;
-      line-height: 1.5;
-      border-top: none;
+      background: white; height: 190px; overflow-y: auto;
+      padding: 8px; font-size: 11px; line-height: 1.5;
     }
     .grilo-chat-msgs .msg-grilo { color: #1a6800; margin: 3px 0; }
     .grilo-chat-msgs .msg-grilo.estranho { color: #8b0000; font-style: italic; }
     .grilo-chat-msgs .msg-user { color: #00008b; text-align: right; margin: 3px 0; }
     .grilo-chat-input-row {
-      display: flex;
-      background: #ece9d8;
-      padding: 3px;
-      gap: 3px;
-      border-top: 1px solid #aca899;
+      display: flex; background: #ece9d8;
+      padding: 3px; gap: 3px; border-top: 1px solid #aca899;
     }
     .grilo-chat-input-row input {
-      flex: 1;
-      padding: 3px 6px;
-      border: 1px solid #7b9ebc;
-      border-radius: 2px;
-      font-family: 'Tahoma', sans-serif;
-      font-size: 11px;
-      outline: none;
-      background: white;
-      box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
-    }
-    .grilo-chat-input-row input:focus { border-color: #316ac5; }
-
-    /* TASKBAR XP */
-    #taskbar {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      height: 40px;
-      background: linear-gradient(180deg,
-        #2a80e0 0%,
-        #1c5cc0 8%,
-        #1854b8 88%,
-        #1248a8 100%);
-      border-top: 1px solid #4898e8;
-      display: flex;
-      align-items: center;
-      padding: 0 4px;
-      gap: 4px;
-      z-index: 999;
-      box-shadow: 0 -1px 0 #0830a0, 0 -3px 8px rgba(0,0,0,0.4);
-    }
-
-    #startBtn {
-      background: linear-gradient(180deg, #60c840 0%, #38a010 30%, #288000 70%, #1c6800 100%);
-      color: white;
-      border: 1px solid #1a5000;
-      border-radius: 12px;
-      padding: 3px 14px 3px 8px;
-      font-family: 'Tahoma', sans-serif;
-      font-size: 13px;
-      font-weight: 900;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.4),
-        0 1px 4px rgba(0,0,0,0.4),
-        0 0 8px rgba(60,200,0,0.3);
-      height: 30px;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-      letter-spacing: 0.5px;
-    }
-    #startBtn:hover { background: linear-gradient(180deg, #78e050 0%, #50b820 30%, #389000 70%, #247800 100%); }
-    #startBtn:active { transform: scale(0.97); }
-    .start-icon { font-size: 16px; }
-
-    .taskbar-sep {
-      width: 1px;
-      height: 28px;
-      background: linear-gradient(180deg, transparent, rgba(255,255,255,0.3), transparent);
-      margin: 0 2px;
-    }
-
-    #appsBar { display: flex; gap: 2px; flex: 1; }
-    .taskbar-app {
-      background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 100%);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 3px;
-      padding: 2px 8px;
-      color: white;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      height: 28px;
-      text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
-      min-width: 80px;
-      transition: background 0.1s;
-    }
-    .taskbar-app:hover { background: linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.1) 100%); }
-    .taskbar-app.ativo {
-      background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(255,255,255,0.08) 100%);
-      border-color: rgba(255,255,255,0.12);
-      box-shadow: inset 0 2px 3px rgba(0,0,0,0.3);
-    }
-    .taskbar-app img { width: 16px; height: 16px; object-fit: contain; }
-
-    /* TRAY */
-    #tray {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      background: linear-gradient(180deg, #1248a8 0%, #1040a0 100%);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 3px;
-      padding: 2px 6px;
-      height: 28px;
-    }
-    #relogio {
-      color: white;
-      font-size: 11px;
-      font-weight: 700;
-      text-align: right;
-      min-width: 44px;
-      text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+      flex: 1; padding: 3px 6px;
+      border: 1px solid #7b9ebc; border-radius: 2px;
+      font-family: 'Tahoma', sans-serif; font-size: 11px; outline: none;
+      background: white; box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
     }
 
     /* MSN */
-    .msn-janela {
-      width: 680px;
-      height: 500px;
-      display: flex;
-      flex-direction: column;
-      background: #ece9d8;
-    }
+    .msn-janela { width: 680px; height: 500px; display: flex; flex-direction: column; background: #ece9d8; }
     .msn-corpo { display: flex; flex: 1; overflow: hidden; }
     .msn-sidebar {
       width: 190px;
       background: linear-gradient(180deg, #1560b5 0%, #0e3f8a 100%);
-      display: flex;
-      flex-direction: column;
+      display: flex; flex-direction: column;
     }
-    .msn-sidebar-header {
-      padding: 8px 10px;
-      background: rgba(0,0,0,0.25);
-      border-bottom: 1px solid rgba(255,255,255,0.15);
-    }
-    .msn-logo {
-      font-size: 13px;
-      font-weight: 900;
-      color: white;
-      text-shadow: 0 0 8px rgba(100,180,255,0.6);
-      letter-spacing: 1px;
-    }
-    .msn-user-box {
-      padding: 8px 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.15);
-      background: rgba(255,255,255,0.06);
-    }
-    .msn-avatar-box {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+    .msn-sidebar-header { padding: 8px 10px; background: rgba(0,0,0,0.25); border-bottom: 1px solid rgba(255,255,255,0.15); }
+    .msn-logo { font-size: 13px; font-weight: 900; color: white; text-shadow: 0 0 8px rgba(100,180,255,0.6); letter-spacing: 1px; }
+    .msn-user-box { padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); }
+    .msn-avatar-box { display: flex; align-items: center; gap: 6px; }
     .msn-avatar-emoji { font-size: 22px; }
-    .msn-user-name { font-weight: 700; font-size: 11px; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+    .msn-user-name { font-weight: 700; font-size: 11px; color: white; }
     .msn-status-dot { font-size: 10px; color: #7fff00; }
-    .msn-contatos-header {
-      padding: 4px 10px;
-      font-size: 10px;
-      color: rgba(255,255,255,0.6);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
+    .msn-contatos-header { padding: 4px 10px; font-size: 10px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.1); }
     .msn-contatos { flex: 1; overflow-y: auto; }
     .msn-contato {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 10px;
-      cursor: pointer;
-      color: white;
-      font-size: 11px;
-      font-weight: 700;
-      transition: background 0.1s;
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 10px; cursor: pointer; color: white;
+      font-size: 11px; font-weight: 700; transition: background 0.1s;
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
     .msn-contato:hover { background: rgba(255,255,255,0.12); }
@@ -630,26 +458,18 @@
     .msn-contato-avatar { font-size: 18px; }
     .msn-cont-nome { font-size: 11px; font-weight: 700; }
     .msn-cont-status { font-size: 10px; font-weight: 400; color: rgba(255,255,255,0.7); }
-
     .msn-chat-area { flex: 1; display: flex; flex-direction: column; }
     .msn-chat-header {
       background: linear-gradient(180deg, #e4eeff 0%, #ccdcf8 100%);
-      padding: 8px 12px;
-      border-bottom: 1px solid #98b8e0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      padding: 8px 12px; border-bottom: 1px solid #98b8e0;
+      display: flex; align-items: center; gap: 8px;
     }
     .msn-chat-avatar-big { font-size: 24px; }
     .msn-chat-nome { font-weight: 700; font-size: 12px; color: #0a246a; }
     .msn-chat-desc { font-size: 10px; color: #555; }
     .msn-chat-msgs {
-      flex: 1;
-      overflow-y: auto;
-      padding: 8px 10px;
-      background: white;
-      font-size: 11px;
-      line-height: 1.6;
+      flex: 1; overflow-y: auto; padding: 8px 10px;
+      background: white; font-size: 11px; line-height: 1.6;
     }
     .msn-msg { margin-bottom: 2px; }
     .msn-msg-nome { font-weight: 700; }
@@ -662,213 +482,198 @@
     .msn-input-area { display: flex; flex-direction: column; border-top: 2px solid #98b8e0; }
     .msn-toolbar {
       background: linear-gradient(180deg, #f0efe4 0%, #e8e7d8 100%);
-      padding: 2px 6px;
-      font-size: 11px;
-      color: #444;
-      border-bottom: 1px solid #aca899;
-      display: flex;
-      gap: 8px;
+      padding: 2px 6px; font-size: 11px; color: #444;
+      border-bottom: 1px solid #aca899; display: flex; gap: 8px;
     }
     .msn-toolbar span { cursor: pointer; padding: 1px 3px; border-radius: 2px; }
     .msn-toolbar span:hover { background: #0a246a; color: white; }
     .msn-textarea {
-      width: 100%;
-      height: 60px;
-      border: none;
-      resize: none;
-      font-family: 'Tahoma', sans-serif;
-      font-size: 11px;
-      padding: 6px 8px;
-      outline: none;
-      background: white;
-      color: #000;
+      width: 100%; height: 60px; border: none; resize: none;
+      font-family: 'Tahoma', sans-serif; font-size: 11px;
+      padding: 6px 8px; outline: none; background: white; color: #000;
     }
     .msn-send-row {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
+      display: flex; justify-content: flex-end; align-items: center;
       padding: 3px 6px;
       background: linear-gradient(180deg, #f0efe4 0%, #e8e7d8 100%);
-      border-top: 1px solid #aca899;
-      gap: 4px;
+      border-top: 1px solid #aca899; gap: 4px;
     }
     .msn-sem-chat {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      color: #888;
-      background: #f8f8f4;
-      flex-direction: column;
-      gap: 8px;
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      font-size: 12px; color: #888; background: #f8f8f4;
+      flex-direction: column; gap: 8px;
     }
-    .msn-sem-chat-logo { font-size: 32px; opacity: 0.3; }
+
+    /* PAINT */
+    .paint-janela { width: 640px; }
+    .paint-corpo { background: #808080; display: flex; flex-direction: column; }
+    .paint-toolbar {
+      background: linear-gradient(180deg, #f0efe4, #dddcd0);
+      padding: 4px 6px; border-bottom: 2px solid #aca899;
+      display: flex; align-items: center; gap: 2px; flex-wrap: wrap;
+    }
+    .paint-tool-btn {
+      width: 28px; height: 28px;
+      background: linear-gradient(180deg, #f0efe4, #dddcd0);
+      border: 1px solid #aca899; border-radius: 2px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: 14px; transition: background 0.1s;
+    }
+    .paint-tool-btn:hover { background: linear-gradient(180deg, #e0eeff, #c8dcf8); border-color: #4080c0; }
+    .paint-tool-btn.ativo { background: linear-gradient(180deg, #c8dcf8, #a8ccf0); border-color: #0050a0; box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2); }
+    .paint-sep { width: 1px; height: 24px; background: #aca899; margin: 0 3px; }
+    .paint-tamanho-label { font-size: 10px; color: #444; margin-right: 2px; }
+    .paint-tamanho { width: 50px; }
+    .paint-area {
+      display: flex; flex: 1;
+      background: #808080; padding: 4px; gap: 4px; align-items: flex-start;
+    }
+    .paint-paleta {
+      display: grid; grid-template-columns: repeat(2, 18px);
+      gap: 2px; padding: 4px;
+      background: linear-gradient(180deg, #f0efe4, #dddcd0);
+      border: 1px solid #aca899; border-radius: 2px;
+    }
+    .paint-cor {
+      width: 18px; height: 18px;
+      border: 1px solid #666; cursor: pointer; border-radius: 1px;
+      transition: transform 0.1s;
+    }
+    .paint-cor:hover { transform: scale(1.2); border-color: #000; }
+    .paint-cor.ativa { border: 2px solid #000; transform: scale(1.15); }
+    .paint-cor-atual-wrap {
+      margin-top: 6px; text-align: center;
+    }
+    .paint-cor-label { font-size: 9px; color: #444; display: block; margin-bottom: 2px; }
+    .paint-cor-preview {
+      width: 32px; height: 32px;
+      border: 2px solid #333; border-radius: 2px;
+      margin: 0 auto;
+    }
+    #paintCanvas {
+      border: 2px inset #aaa; cursor: crosshair;
+      background: white; display: block;
+    }
+    .paint-status {
+      background: linear-gradient(180deg, #f0efe4, #dddcd0);
+      padding: 2px 8px; font-size: 10px; color: #444;
+      border-top: 1px solid #aca899;
+      display: flex; gap: 12px;
+    }
 
     /* TETRIS */
     .tetris-janela { width: 400px; }
-    .tetris-corpo {
-      background: #0a0a18;
-      padding: 12px;
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-    }
-    #tetrisCanvas {
-      border: 2px solid #304060;
-      box-shadow: 0 0 10px rgba(0,80,200,0.3), inset 0 0 4px rgba(0,0,0,0.5);
-      display: block;
-      background: #080814;
-    }
+    .tetris-corpo { background: #0a0a18; padding: 12px; display: flex; gap: 12px; align-items: flex-start; }
+    #tetrisCanvas { border: 2px solid #304060; box-shadow: 0 0 10px rgba(0,80,200,0.3); display: block; background: #080814; }
     .tetris-panel { width: 96px; color: white; font-size: 11px; }
-    .tetris-panel h3 {
-      font-size: 9px;
-      color: #6080a0;
-      margin: 0 0 3px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      border-bottom: 1px solid #203050;
-      padding-bottom: 2px;
-    }
-    .tetris-panel .val {
-      font-size: 18px;
-      font-weight: 900;
-      color: #d0e8ff;
-      margin-bottom: 10px;
-      text-shadow: 0 0 6px rgba(100,180,255,0.5);
-    }
-    #nextCanvas {
-      border: 1px solid #304060;
-      background: #080814;
-      display: block;
-      margin-bottom: 10px;
-      box-shadow: inset 0 0 4px rgba(0,0,0,0.5);
-    }
-    .tetris-btn {
-      width: 100%;
-      background: linear-gradient(180deg, #4090e0 0%, #1060c0 50%, #0848a0 100%);
-      color: white;
-      border: 1px solid #0030a0;
-      border-radius: 3px;
-      padding: 6px;
-      font-family: 'Tahoma', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-bottom: 4px;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
-      text-shadow: 0 1px 1px rgba(0,0,0,0.5);
-    }
+    .tetris-panel h3 { font-size: 9px; color: #6080a0; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 1.5px; border-bottom: 1px solid #203050; padding-bottom: 2px; }
+    .tetris-panel .val { font-size: 18px; font-weight: 900; color: #d0e8ff; margin-bottom: 10px; text-shadow: 0 0 6px rgba(100,180,255,0.5); }
+    #nextCanvas { border: 1px solid #304060; background: #080814; display: block; margin-bottom: 10px; }
+    .tetris-btn { width: 100%; background: linear-gradient(180deg, #4090e0 0%, #1060c0 50%, #0848a0 100%); color: white; border: 1px solid #0030a0; border-radius: 3px; padding: 6px; font-family: 'Tahoma', sans-serif; font-size: 11px; font-weight: 700; cursor: pointer; margin-bottom: 4px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.3); }
     .tetris-btn:hover { filter: brightness(1.15); }
-    .tetris-btn.vermelho {
-      background: linear-gradient(180deg, #e04040 0%, #c02020 50%, #a00808 100%);
-      border-color: #800000;
-    }
-    .tetris-controls {
-      background: #0a0a18;
-      padding: 6px 12px 8px;
-      color: #405060;
-      font-size: 10px;
-      border-top: 1px solid #1a2030;
-      text-align: center;
-    }
-    .tetris-menu {
-      background: linear-gradient(180deg, #0a0a18 0%, #0c0c20 100%);
-      padding: 32px 16px;
-      text-align: center;
-      color: white;
-    }
-    .tetris-title {
-      font-size: 32px;
-      font-weight: 900;
-      letter-spacing: 6px;
-      font-family: Arial, sans-serif;
-      text-shadow: 0 0 20px rgba(100,180,255,0.8), 0 0 40px rgba(100,100,255,0.4);
-      color: #c0e8ff;
-      margin-bottom: 6px;
-    }
+    .tetris-btn.vermelho { background: linear-gradient(180deg, #e04040 0%, #c02020 50%, #a00808 100%); border-color: #800000; }
+    .tetris-controls { background: #0a0a18; padding: 6px 12px 8px; color: #405060; font-size: 10px; border-top: 1px solid #1a2030; text-align: center; }
+    .tetris-menu { background: linear-gradient(180deg, #0a0a18 0%, #0c0c20 100%); padding: 32px 16px; text-align: center; color: white; }
+    .tetris-title { font-size: 32px; font-weight: 900; letter-spacing: 6px; font-family: Arial, sans-serif; text-shadow: 0 0 20px rgba(100,180,255,0.8); color: #c0e8ff; margin-bottom: 6px; }
     .tetris-sub { font-size: 11px; color: #405080; margin-bottom: 20px; }
     .tetris-hiscore { font-size: 11px; color: #6080a0; margin-bottom: 14px; }
 
+    /* ARQUIVO MISTERIOSO */
+    #arquivoMisterioso { position: absolute; top: 200px; left: 130px; width: 320px; z-index: 60; display: none; }
+    #arquivoMisterioso textarea { width: 100%; height: 160px; border: none; resize: none; font-family: 'Courier New', monospace; font-size: 11px; padding: 6px; background: #fffff0; outline: none; color: #2a0000; }
+
     /* POPUP SISTEMA */
-    #popupSistema {
-      position: fixed;
-      bottom: 48px;
-      right: 8px;
-      width: 280px;
-      z-index: 500;
-      display: none;
-      animation: slideUp 0.3s ease;
-    }
+    #popupSistema { position: fixed; bottom: 48px; right: 8px; width: 280px; z-index: 500; display: none; animation: slideUp 0.3s ease; }
     @keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
-    .popup-corpo {
-      background: #fffef0;
-      padding: 10px 12px;
-      font-size: 11px;
-      line-height: 1.5;
-      border-top: none;
-    }
+    .popup-corpo { background: #fffef0; padding: 10px 12px; font-size: 11px; line-height: 1.5; border-top: none; }
     .popup-corpo p { margin: 0; color: #333; }
     .popup-corpo p.estranho { color: #6b0000; font-style: italic; }
-    .popup-fechar-row {
-      display: flex;
-      justify-content: flex-end;
-      padding: 4px 8px 6px;
-      background: #ece9d8;
-    }
+    .popup-fechar-row { display: flex; justify-content: flex-end; padding: 4px 8px 6px; background: #ece9d8; }
 
-    /* ARQUIVO MISTERIOSO */
-    #arquivoMisterioso {
-      position: absolute;
-      top: 200px;
-      left: 130px;
-      width: 320px;
-      z-index: 60;
-      display: none;
+    /* TASKBAR */
+    #taskbar {
+      position: fixed; bottom: 0; width: 100%; height: 40px;
+      background: linear-gradient(180deg, #2a80e0 0%, #1c5cc0 8%, #1854b8 88%, #1248a8 100%);
+      border-top: 1px solid #4898e8;
+      display: flex; align-items: center; padding: 0 4px; gap: 4px;
+      z-index: 999;
+      box-shadow: 0 -1px 0 #0830a0, 0 -3px 8px rgba(0,0,0,0.4);
     }
-    #arquivoMisterioso textarea {
-      width: 100%;
-      height: 160px;
-      border: none;
-      resize: none;
-      font-family: 'Courier New', monospace;
-      font-size: 11px;
-      padding: 6px;
-      background: #fffff0;
-      outline: none;
-      color: #2a0000;
+    #startBtn {
+      background: linear-gradient(180deg, #60c840 0%, #38a010 30%, #288000 70%, #1c6800 100%);
+      color: white; border: 1px solid #1a5000; border-radius: 12px;
+      padding: 3px 14px 3px 8px;
+      font-family: 'Tahoma', sans-serif; font-size: 13px; font-weight: 900;
+      cursor: pointer; display: flex; align-items: center; gap: 4px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 1px 4px rgba(0,0,0,0.4);
+      height: 30px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
     }
+    #startBtn:hover { filter: brightness(1.1); }
+    .start-icon { font-size: 16px; }
+    .taskbar-sep { width: 1px; height: 28px; background: linear-gradient(180deg, transparent, rgba(255,255,255,0.3), transparent); margin: 0 2px; }
+    #appsBar { display: flex; gap: 2px; flex: 1; }
+    .taskbar-app {
+      background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 100%);
+      border: 1px solid rgba(255,255,255,0.18); border-radius: 3px;
+      padding: 2px 8px; color: white; font-size: 11px; font-weight: 700;
+      cursor: pointer; display: flex; align-items: center; gap: 4px;
+      height: 28px; text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+      min-width: 80px; transition: background 0.1s;
+    }
+    .taskbar-app:hover { background: linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.1) 100%); }
+    .taskbar-app img { width: 16px; height: 16px; object-fit: contain; }
+    #tray {
+      display: flex; align-items: center; gap: 4px;
+      background: linear-gradient(180deg, #1248a8 0%, #1040a0 100%);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 3px; padding: 2px 6px; height: 28px;
+    }
+    #relogio { color: white; font-size: 11px; font-weight: 700; text-align: right; min-width: 44px; }
 
-    /* EFEITO GLITCH */
-    @keyframes glitch {
-      0%,100%{filter:none}
-      10%{filter:hue-rotate(90deg) brightness(1.1)}
-      20%{filter:invert(0.05) hue-rotate(-30deg)}
-      30%{filter:none}
-    }
-    .glitch { animation: glitch 0.4s ease; }
-
-    @keyframes popIn {
-      from { transform: scale(0.88); opacity: 0; }
-      to   { transform: scale(1); opacity: 1; }
-    }
+    @keyframes popIn { from{transform:scale(0.88);opacity:0} to{transform:scale(1);opacity:1} }
+    @keyframes glitch { 0%,100%{filter:none} 10%{filter:hue-rotate(90deg) brightness(1.1)} 20%{filter:invert(0.05)} 30%{filter:none} }
   </style>
 </head>
 <body>
+
+<!-- TELA DE BOOT -->
+<div id="bootScreen">
+  <div id="bootText"></div>
+</div>
+
+<!-- SPLASH XP -->
+<div id="xpSplash">
+  <div class="xp-logo-wrap">
+    <div class="xp-logo-flag">🪟</div>
+    <div class="xp-logo-text">
+      <span>W</span><span>i</span><span>n</span><span>d</span><span>o</span><span>w</span><span>s</span>
+    </div>
+    <div style="color:#c0c0c0;font-size:18px;font-family:Arial;letter-spacing:3px;margin-top:2px;">XP</div>
+    <div class="xp-logo-sub">Professional Edition</div>
+  </div>
+  <div class="xp-progress-bg">
+    <div id="xpProgressBar"></div>
+  </div>
+  <div style="color:#888;font-size:11px;font-family:Arial;">Carregando...</div>
+</div>
 
 <!-- DESKTOP -->
 <div id="desktop">
   <div class="icon" ondblclick="abrirGoogle()">
     <div class="icon-img-wrap"><img src="google.png" onerror="this.style.display='none';this.parentNode.innerHTML='🔍'"></div>
-    <span>Google</span>
+    <span>Internet Explorer</span>
   </div>
   <div class="icon" ondblclick="abrirMSN()">
     <div class="icon-img-wrap"><img src="MSN.png" onerror="this.style.display='none';this.parentNode.innerHTML='💬'"></div>
-    <span>MSN</span>
+    <span>MSN Messenger</span>
   </div>
   <div class="icon" ondblclick="abrirTetris()">
     <div class="icon-img-wrap"><img src="tetris.png" onerror="this.style.display='none';this.parentNode.innerHTML='🎮'"></div>
     <span>Tetris</span>
+  </div>
+  <div class="icon" ondblclick="abrirPaint()">
+    <div class="icon-img-wrap" style="font-size:36px;">🎨</div>
+    <span>Paint</span>
   </div>
   <div class="icon" ondblclick="abrirBloco()">
     <div class="icon-img-wrap"><img src="bloco.png" onerror="this.style.display='none';this.parentNode.innerHTML='📝'"></div>
@@ -886,22 +691,15 @@
       <button class="btn-titulo btn-fechar-xp" onclick="fecharBloco()">✕</button>
     </div>
   </div>
-  <div class="menu-bar">
-    <span class="menu-item">Arquivo</span>
-    <span class="menu-item">Editar</span>
-    <span class="menu-item">Formatar</span>
-    <span class="menu-item">Ajuda</span>
-  </div>
+  <div class="menu-bar"><span class="menu-item">Arquivo</span><span class="menu-item">Editar</span><span class="menu-item">Formatar</span><span class="menu-item">Ajuda</span></div>
   <textarea placeholder="Digite aqui..."></textarea>
 </div>
 
 <!-- ARQUIVO MISTERIOSO -->
 <div id="arquivoMisterioso" class="janela-xp">
-  <div class="barra-titulo" style="background:linear-gradient(180deg,#5a1010 0%,#3a0808 100%);">
+  <div class="barra-titulo" style="background:linear-gradient(180deg,#5a1010,#3a0808);">
     <div class="titulo-esquerda"><span class="titulo-icone">📄</span> <span id="arquivoNome">notas.txt</span></div>
-    <div class="titulo-botoes">
-      <button class="btn-titulo btn-fechar-xp" onclick="fecharArquivo()">✕</button>
-    </div>
+    <div class="titulo-botoes"><button class="btn-titulo btn-fechar-xp" onclick="fecharArquivo()">✕</button></div>
   </div>
   <div class="menu-bar"><span class="menu-item">Arquivo</span><span class="menu-item">Editar</span></div>
   <textarea id="arquivoConteudo" readonly style="background:#fffff0;color:#2a0000;font-family:'Courier New',monospace;font-size:11px;width:100%;height:160px;border:none;padding:6px;outline:none;resize:none;"></textarea>
@@ -911,24 +709,53 @@
 <div id="googlePage" class="overlay">
   <div id="googleContainer" class="janela-xp">
     <div class="barra-titulo">
-      <div class="titulo-esquerda"><span class="titulo-icone">🌐</span> Internet Explorer — Google</div>
+      <div class="titulo-esquerda"><span class="titulo-icone">🌐</span> Internet Explorer</div>
       <div class="titulo-botoes">
         <button class="btn-titulo btn-min">_</button>
         <button class="btn-titulo btn-max">□</button>
         <button class="btn-titulo btn-fechar-xp" onclick="fecharGoogle()">✕</button>
       </div>
     </div>
-    <div class="menu-bar">
-      <span class="menu-item">Arquivo</span><span class="menu-item">Editar</span>
-      <span class="menu-item">Exibir</span><span class="menu-item">Favoritos</span>
+    <div class="menu-bar"><span class="menu-item">Arquivo</span><span class="menu-item">Editar</span><span class="menu-item">Exibir</span><span class="menu-item">Favoritos</span></div>
+    <div class="ie-toolbar">
+      <button class="btn-xp" style="padding:2px 8px;">◀</button>
+      <button class="btn-xp" style="padding:2px 8px;">▶</button>
+      <button class="btn-xp" style="padding:2px 8px;">⟳</button>
+      <input class="ie-addr-bar" value="http://www.google.com.br" readonly>
+      <button class="btn-xp" style="padding:2px 10px;">Ir</button>
     </div>
     <div class="google-body">
-      <div class="google-logo">Google</div>
+      <div class="google-logo"><span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span></div>
       <div class="google-search-row">
         <input id="pesquisa" placeholder="Pesquisar na Web..." onkeydown="verificarEnter(event)">
-        <button class="btn-xp" onclick="irParaSite()">Buscar</button>
+        <button class="btn-xp" onclick="pesquisarGoogle()">Pesquisa Google</button>
       </div>
-      <p class="google-dica">Tente pesquisar: <em>cricket assistant download</em></p>
+      <div style="font-size:11px;color:#777;margin-top:8px;font-family:Arial;">Pesquisa avançada &nbsp;|&nbsp; Preferências &nbsp;|&nbsp; Ferramentas de idioma</div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTADOS DO GOOGLE -->
+<div id="googleResultadosOverlay" class="overlay">
+  <div id="googleResultados" class="janela-xp">
+    <div class="barra-titulo">
+      <div class="titulo-esquerda"><span class="titulo-icone">🌐</span> <span id="googleResTitle">Google — resultados</span></div>
+      <div class="titulo-botoes">
+        <button class="btn-titulo btn-min">_</button>
+        <button class="btn-titulo btn-max">□</button>
+        <button class="btn-titulo btn-fechar-xp" onclick="fecharResultados()">✕</button>
+      </div>
+    </div>
+    <div class="menu-bar"><span class="menu-item">Arquivo</span><span class="menu-item">Editar</span><span class="menu-item">Exibir</span><span class="menu-item">Favoritos</span></div>
+    <div class="ie-toolbar">
+      <button class="btn-xp" style="padding:2px 8px;" onclick="voltarGoogle()">◀</button>
+      <button class="btn-xp" style="padding:2px 8px;">▶</button>
+      <button class="btn-xp" style="padding:2px 8px;">⟳</button>
+      <input class="ie-addr-bar" id="googleResAddr" value="http://www.google.com.br/search?q=...">
+      <button class="btn-xp" style="padding:2px 10px;">Ir</button>
+    </div>
+    <div class="google-resultados-body" id="googleResBody">
+      <div class="google-loading"><div class="google-spinner"></div>Pesquisando...</div>
     </div>
   </div>
 </div>
@@ -944,10 +771,7 @@
         <button class="btn-titulo btn-fechar-xp" onclick="fecharSite()">✕</button>
       </div>
     </div>
-    <div class="menu-bar">
-      <span class="menu-item">Arquivo</span><span class="menu-item">Editar</span>
-      <span class="menu-item">Exibir</span><span class="menu-item">Favoritos</span>
-    </div>
+    <div class="menu-bar"><span class="menu-item">Arquivo</span><span class="menu-item">Editar</span><span class="menu-item">Exibir</span><span class="menu-item">Favoritos</span></div>
     <div class="site-body">
       <div class="site-header">
         <div class="site-logo">🦗 Cricket Assistant</div>
@@ -957,8 +781,7 @@
         <div class="site-box">
           <h3>✨ O que é o Cricket Assistant?</h3>
           <p>Cricket é um assistente virtual fofo e inteligente que vai morar no seu computador! Ele conversa, faz companhia e nunca te abandona. 💚</p>
-          <br>
-          <p style="font-size:10px;color:#888;">Versão 1.0.3 | Lançado em 14/03/2004 | Compatível com Windows XP</p>
+          <br><p style="font-size:10px;color:#888;">Versão 1.0.3 | 14/03/2004 | Windows XP/Vista</p>
         </div>
         <div class="site-box destaque">
           <h3>📥 Download Gratuito!</h3>
@@ -974,9 +797,7 @@
 <!-- DIÁLOGO INICIAL -->
 <div id="dialogoBox" class="overlay" style="z-index:200;">
   <div class="dialogo-janela janela-xp">
-    <div class="barra-titulo">
-      <div class="titulo-esquerda"><span class="titulo-icone">🦗</span> Cricket Assistant</div>
-    </div>
+    <div class="barra-titulo"><div class="titulo-esquerda"><span class="titulo-icone">🦗</span> Cricket Assistant</div></div>
     <div class="dialogo-corpo">
       <div class="grilo-avatar">🦗</div>
       <p id="dialogoPergunta">Oi... qual é seu nome?</p>
@@ -989,9 +810,7 @@
 <!-- DOWNLOAD -->
 <div id="downloadProgress" class="overlay" style="z-index:200;">
   <div class="progress-janela janela-xp">
-    <div class="barra-titulo">
-      <div class="titulo-esquerda"><span class="titulo-icone">⬇</span> Baixando Cricket Assistant...</div>
-    </div>
+    <div class="barra-titulo"><div class="titulo-esquerda"><span class="titulo-icone">⬇</span> Baixando Cricket Assistant...</div></div>
     <div class="progress-corpo">
       <p style="color:#333;font-size:11px;">Aguarde, fazendo download... 🦗</p>
       <div class="progress-bar-bg"><div id="progressBar"></div></div>
@@ -1006,20 +825,16 @@
 <!-- GRILO -->
 <div id="petWrap" style="position:fixed;display:none;flex-direction:column;align-items:center;z-index:150;pointer-events:all;">
   <div id="fala"></div>
-  <img id="pet" src="cricket.png"
-    style="width:76px;image-rendering:pixelated;cursor:pointer;transition:filter 0.3s;"
-    onerror="this.style.display='none';document.getElementById('petEmoji').style.display='block'">
+  <img id="pet" src="cricket.png" style="width:76px;image-rendering:pixelated;cursor:pointer;transition:filter 0.3s;" onerror="this.style.display='none';document.getElementById('petEmoji').style.display='block'">
   <div id="petEmoji" style="font-size:60px;cursor:pointer;display:none;">🦗</div>
 </div>
 
 <!-- CHAT DO GRILO -->
 <div id="griloChat" style="position:fixed;width:270px;display:none;z-index:300;">
   <div class="janela-xp">
-    <div class="barra-titulo" id="griloChatBarra">
+    <div class="barra-titulo">
       <div class="titulo-esquerda"><span class="titulo-icone">🦗</span> Cricket — Conversa</div>
-      <div class="titulo-botoes">
-        <button class="btn-titulo btn-fechar-xp" onclick="fecharGriloChat()">✕</button>
-      </div>
+      <div class="titulo-botoes"><button class="btn-titulo btn-fechar-xp" onclick="fecharGriloChat()">✕</button></div>
     </div>
     <div class="grilo-chat-msgs" id="griloChatMsgs"></div>
     <div class="grilo-chat-input-row">
@@ -1029,7 +844,7 @@
   </div>
 </div>
 
-<!-- MSN MESSENGER -->
+<!-- MSN -->
 <div id="msnApp" class="overlay" style="z-index:200;">
   <div class="msn-janela janela-xp">
     <div class="barra-titulo">
@@ -1042,42 +857,29 @@
     </div>
     <div class="msn-corpo">
       <div class="msn-sidebar">
-        <div class="msn-sidebar-header">
-          <div class="msn-logo">MSN Messenger</div>
-        </div>
+        <div class="msn-sidebar-header"><div class="msn-logo">MSN Messenger</div></div>
         <div class="msn-user-box">
           <div class="msn-avatar-box">
             <div class="msn-avatar-emoji">😊</div>
-            <div>
-              <div class="msn-user-name" id="msnMeuNome">Você</div>
-              <div class="msn-status-dot">● Online</div>
-            </div>
+            <div><div class="msn-user-name" id="msnMeuNome">Você</div><div class="msn-status-dot">● Online</div></div>
           </div>
         </div>
         <div class="msn-contatos-header">Contatos Online</div>
         <div class="msn-contatos" id="msnContatos"></div>
       </div>
       <div class="msn-chat-area">
-        <div class="msn-sem-chat" id="msnSemChat">
-          <div class="msn-sem-chat-logo">💬</div>
-          <span>Selecione um contato para conversar</span>
-        </div>
+        <div class="msn-sem-chat" id="msnSemChat"><span style="font-size:28px;opacity:0.2;">💬</span><span>Selecione um contato</span></div>
         <div id="msnChatConteudo" style="display:none;flex-direction:column;flex:1;overflow:hidden;">
           <div class="msn-chat-header">
             <div class="msn-chat-avatar-big" id="msnChatAvatar">👤</div>
-            <div>
-              <div class="msn-chat-nome" id="msnChatNome">Contato</div>
-              <div class="msn-chat-desc" id="msnChatDesc">Online</div>
-            </div>
+            <div><div class="msn-chat-nome" id="msnChatNome">Contato</div><div class="msn-chat-desc" id="msnChatDesc">Online</div></div>
           </div>
           <div class="msn-chat-msgs" id="msnMsgs"></div>
           <div class="msn-input-area">
-            <div class="msn-toolbar">
-              <span>Fonte</span><span>Emoticons</span><span>Plano de fundo</span><span>Nudge</span>
-            </div>
-            <textarea class="msn-textarea" id="msnInput" placeholder="Digite uma mensagem e pressione Enter..." onkeydown="msnEnterEnviar(event)"></textarea>
+            <div class="msn-toolbar"><span>Fonte</span><span>Emoticons</span><span>Plano de fundo</span><span>Nudge</span></div>
+            <textarea class="msn-textarea" id="msnInput" placeholder="Digite uma mensagem..." onkeydown="msnEnterEnviar(event)"></textarea>
             <div class="msn-send-row">
-              <span style="font-size:10px;color:#888;flex:1;">Pressione Enter para enviar</span>
+              <span style="font-size:10px;color:#888;flex:1;">Enter para enviar</span>
               <button class="btn-xp" onclick="enviarMsgMSN()">Enviar</button>
             </div>
           </div>
@@ -1100,50 +902,92 @@
     </div>
     <div id="tetrisMenu" class="tetris-menu">
       <div class="tetris-title">TETRIS</div>
-      <div class="tetris-sub">Clássico de todos os tempos — Windows XP Edition</div>
-      <div class="tetris-hiscore">Melhor pontuação: <span id="tetrisHiScore">0</span></div>
+      <div class="tetris-sub">Windows XP Edition</div>
+      <div class="tetris-hiscore">Melhor: <span id="tetrisHiScore">0</span></div>
       <button class="tetris-btn" style="width:140px;margin:0 auto 6px;" onclick="iniciarTetris()">▶ START</button>
     </div>
     <div id="tetrisJogo" style="display:none;">
       <div class="tetris-corpo">
         <canvas id="tetrisCanvas" width="200" height="400"></canvas>
         <div class="tetris-panel">
-          <h3>Próxima</h3>
-          <canvas id="nextCanvas" width="80" height="80"></canvas>
-          <h3>Pontos</h3>
-          <div class="val" id="tetrisPontos">0</div>
-          <h3>Linhas</h3>
-          <div class="val" id="tetrisLinhas">0</div>
-          <h3>Nível</h3>
-          <div class="val" id="tetrisNivel">1</div>
+          <h3>Próxima</h3><canvas id="nextCanvas" width="80" height="80"></canvas>
+          <h3>Pontos</h3><div class="val" id="tetrisPontos">0</div>
+          <h3>Linhas</h3><div class="val" id="tetrisLinhas">0</div>
+          <h3>Nível</h3><div class="val" id="tetrisNivel">1</div>
           <button class="tetris-btn" onclick="pausarTetris()">⏸ Pausar</button>
           <button class="tetris-btn vermelho" onclick="reiniciarTetris()">↺ Reiniciar</button>
         </div>
       </div>
-      <div class="tetris-controls">← → mover &nbsp;|&nbsp; ↑ girar &nbsp;|&nbsp; ↓ acelerar &nbsp;|&nbsp; Espaço = queda rápida</div>
+      <div class="tetris-controls">← → mover | ↑ girar | ↓ acelerar | Espaço = queda</div>
     </div>
     <div id="tetrisGameOver" style="display:none;" class="tetris-menu">
-      <div style="font-size:24px;font-weight:900;color:#f05050;margin-bottom:6px;text-shadow:0 0 10px rgba(255,0,0,0.5);">GAME OVER</div>
-      <div style="font-size:11px;color:#6080a0;margin-bottom:3px;">Sua pontuação:</div>
-      <div style="font-size:28px;font-weight:900;color:#c0e8ff;margin-bottom:14px;text-shadow:0 0 8px rgba(100,200,255,0.5);" id="tetrisFinalPontos">0</div>
+      <div style="font-size:24px;font-weight:900;color:#f05050;margin-bottom:6px;">GAME OVER</div>
+      <div style="font-size:28px;font-weight:900;color:#c0e8ff;margin-bottom:14px;" id="tetrisFinalPontos">0</div>
       <button class="tetris-btn" style="width:140px;margin:0 auto;" onclick="iniciarTetris()">▶ Jogar novamente</button>
     </div>
   </div>
 </div>
 
-<!-- POPUP DE SISTEMA (notificação da taskbar) -->
+<!-- PAINT -->
+<div id="paintApp" class="overlay" style="z-index:200;">
+  <div class="paint-janela janela-xp">
+    <div class="barra-titulo">
+      <div class="titulo-esquerda"><span class="titulo-icone">🎨</span> Paint — sem título</div>
+      <div class="titulo-botoes">
+        <button class="btn-titulo btn-min">_</button>
+        <button class="btn-titulo btn-max">□</button>
+        <button class="btn-titulo btn-fechar-xp" onclick="fecharPaint()">✕</button>
+      </div>
+    </div>
+    <div class="menu-bar"><span class="menu-item">Arquivo</span><span class="menu-item">Editar</span><span class="menu-item">Exibir</span><span class="menu-item">Imagem</span><span class="menu-item">Cores</span><span class="menu-item">Ajuda</span></div>
+    <div class="paint-corpo">
+      <div class="paint-toolbar">
+        <button class="paint-tool-btn ativo" id="btnLapis" onclick="setTool('lapis')" title="Lápis">✏️</button>
+        <button class="paint-tool-btn" id="btnPincel" onclick="setTool('pincel')" title="Pincel">🖌️</button>
+        <button class="paint-tool-btn" id="btnBorracha" onclick="setTool('borracha')" title="Borracha">🔲</button>
+        <button class="paint-tool-btn" id="btnBalde" onclick="setTool('balde')" title="Balde de tinta">🪣</button>
+        <button class="paint-tool-btn" id="btnLinha" onclick="setTool('linha')" title="Linha">╱</button>
+        <button class="paint-tool-btn" id="btnRet" onclick="setTool('retangulo')" title="Retângulo">▭</button>
+        <button class="paint-tool-btn" id="btnCirc" onclick="setTool('circulo')" title="Elipse">◯</button>
+        <div class="paint-sep"></div>
+        <span class="paint-tamanho-label">Tamanho:</span>
+        <input type="range" class="paint-tamanho" id="paintTamanho" min="1" max="40" value="3">
+        <div class="paint-sep"></div>
+        <button class="btn-xp" style="padding:2px 8px;font-size:10px;" onclick="limparCanvas()">🗑️ Limpar</button>
+      </div>
+      <div class="paint-area">
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div class="paint-paleta" id="paintPaleta"></div>
+          <div class="paint-cor-atual-wrap">
+            <span class="paint-cor-label">Cor atual</span>
+            <div class="paint-cor-preview" id="paintCorPreview"></div>
+          </div>
+        </div>
+        <canvas id="paintCanvas" width="520" height="360"></canvas>
+      </div>
+      <div class="paint-status">
+        <span id="paintStatus">Pronto</span>
+        <span id="paintPos">0, 0</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TELA AZUL -->
+<div id="telaAzul">
+  <div class="bsod-header">Windows</div>
+  <div class="bsod-texto" id="bsodTexto"></div>
+</div>
+
+<!-- POPUP DE SISTEMA -->
 <div id="popupSistema">
   <div class="janela-xp" style="border-color:#8b6a00;">
     <div class="barra-titulo" id="popupBarra" style="background:linear-gradient(180deg,#c89000,#9a6800);">
       <div class="titulo-esquerda" id="popupTitulo"><span class="titulo-icone">ℹ️</span> Sistema</div>
-      <div class="titulo-botoes">
-        <button class="btn-titulo btn-fechar-xp" onclick="fecharPopup()">✕</button>
-      </div>
+      <div class="titulo-botoes"><button class="btn-titulo btn-fechar-xp" onclick="fecharPopup()">✕</button></div>
     </div>
     <div class="popup-corpo" id="popupCorpo"><p>Mensagem</p></div>
-    <div class="popup-fechar-row">
-      <button class="btn-xp" onclick="fecharPopup()">OK</button>
-    </div>
+    <div class="popup-fechar-row"><button class="btn-xp" onclick="fecharPopup()">OK</button></div>
   </div>
 </div>
 
@@ -1152,23 +996,68 @@
   <button id="startBtn"><span class="start-icon">⊞</span> Iniciar</button>
   <div class="taskbar-sep"></div>
   <div id="appsBar">
-    <div class="taskbar-app" onclick="abrirGoogle()">
-      <img src="google.png" onerror="this.outerHTML='🔍'"> Internet Explorer
-    </div>
-    <div class="taskbar-app" onclick="abrirMSN()">
-      <img src="MSN.png" onerror="this.outerHTML='💬'"> MSN Messenger
-    </div>
+    <div class="taskbar-app" onclick="abrirGoogle()"><img src="google.png" onerror="this.outerHTML='🌐'"> Internet Explorer</div>
+    <div class="taskbar-app" onclick="abrirMSN()"><img src="MSN.png" onerror="this.outerHTML='💬'"> MSN Messenger</div>
     <div class="taskbar-app" onclick="abrirTetris()">🎮 Tetris</div>
+    <div class="taskbar-app" onclick="abrirPaint()">🎨 Paint</div>
   </div>
   <div id="tray">
-    <span style="font-size:14px;" title="Volume">🔊</span>
-    <span style="font-size:14px;" title="Rede">🌐</span>
+    <span style="font-size:13px;" title="Volume">🔊</span>
+    <span style="font-size:13px;" title="Rede">🌐</span>
     <div id="relogio"></div>
   </div>
 </div>
 
 <script>
-// ===== GLOBAIS =====
+// ===== BOOT =====
+const linhasBoot = [
+  "Award Modular BIOS v6.00PG, An Energy Star Ally",
+  "Copyright (C) 1984-2003, Award Software, Inc.",
+  "",
+  "Intel(R) Pentium(R) 4 CPU 2.40GHz",
+  "Memory Test: 524288K OK",
+  "",
+  "Detecting IDE drives...",
+  "Primary Master  : ST340014A  40GB",
+  "Primary Slave   : NONE",
+  "Secondary Master: HL-DT-ST CD-ROM GCR-8523B",
+  "",
+  "Verifying DMI Pool Data...",
+  "Boot from CD: ...",
+  "Boot from HD: OK",
+  "",
+  "NTLDR is loading Windows XP...",
+];
+
+async function iniciarBoot() {
+  const el = document.getElementById("bootText");
+  for (const linha of linhasBoot) {
+    await new Promise(r => setTimeout(r, linha === "" ? 80 : 120 + Math.random() * 80));
+    el.textContent += linha + "\n";
+  }
+  await new Promise(r => setTimeout(r, 600));
+  // Transição para splash XP
+  document.getElementById("bootScreen").style.display = "none";
+  const splash = document.getElementById("xpSplash");
+  splash.style.display = "flex";
+  // Anima barra de progresso
+  const bar = document.getElementById("xpProgressBar");
+  let p = 0;
+  const iv = setInterval(() => {
+    p += Math.random() * 6 + 2;
+    if (p >= 100) {
+      p = 100; bar.style.width = "100%";
+      clearInterval(iv);
+      setTimeout(() => {
+        splash.style.display = "none";
+        iniciarVirus();
+      }, 800);
+    } else { bar.style.width = p.toFixed(0) + "%"; }
+  }, 120);
+}
+iniciarBoot();
+
+// ===== UTILITÁRIOS =====
 let etapa = 0, nome = "", respostas = {};
 const perguntas = [
   { pergunta: "Oi!! Que bom que você me instalou! 🥹\nQual é o seu nome?", placeholder: "Seu nome..." },
@@ -1178,21 +1067,129 @@ const perguntas = [
   { pergunta: "Interessante! 😄\nSe você pudesse ter um superpoder, qual seria?", placeholder: "Voar, invisibilidade..." },
 ];
 
-// ===== RELÓGIO =====
 function atualizarRelogio() {
   const a = new Date();
   document.getElementById("relogio").textContent =
     String(a.getHours()).padStart(2,"0") + ":" + String(a.getMinutes()).padStart(2,"0");
 }
-atualizarRelogio();
-setInterval(atualizarRelogio, 10000);
+atualizarRelogio(); setInterval(atualizarRelogio, 10000);
 
 function tocarSom(id="somGrilo") {
   const s = document.getElementById(id);
   if (s) { s.currentTime = 0; s.play().catch(()=>{}); }
 }
 
-// ===== POPUP DE SISTEMA =====
+// ===== VÍRUS / ANÚNCIO =====
+let virusCount = 0;
+let virusAtivo = false;
+
+function iniciarVirus() {
+  // Primeiro anúncio aparece depois de 20 segundos
+  setTimeout(mostrarAnuncio, 20000);
+}
+
+function mostrarAnuncio() {
+  if (virusAtivo) return;
+  virusAtivo = true;
+  virusCount++;
+  criarPopupAnuncio();
+  // Escalada — cada vez mais popups
+  if (virusCount < 5) {
+    setTimeout(() => {
+      virusAtivo = false;
+      // Reaparece mais rápido a cada vez
+      setTimeout(mostrarAnuncio, Math.max(8000, 20000 - virusCount * 3000));
+    }, 4000);
+  } else {
+    // Hora da tela azul!
+    setTimeout(ativarTelaAzul, 3000);
+  }
+}
+
+function criarPopupAnuncio() {
+  // Remove anúncios velhos
+  document.querySelectorAll(".anuncio-popup").forEach(e => e.remove());
+  const qtd = Math.min(virusCount, 4);
+  for (let i = 0; i < qtd; i++) {
+    const div = document.createElement("div");
+    div.className = "anuncio-popup janela-xp";
+    div.style.top = (80 + Math.random() * (window.innerHeight - 250)) + "px";
+    div.style.left = (80 + Math.random() * (window.innerWidth - 350)) + "px";
+    div.style.zIndex = 800 + i;
+    div.innerHTML = `
+      <div class="barra-titulo" style="background:linear-gradient(180deg,#50a000,#287000);">
+        <div class="titulo-esquerda"><span class="titulo-icone">🦗</span> Cricket Assistant — Oferta!</div>
+        <div class="titulo-botoes">
+          <button class="btn-titulo btn-fechar-xp anuncio-fechar" onclick="this.closest('.anuncio-popup').remove()">✕</button>
+        </div>
+      </div>
+      <div class="anuncio-body">
+        <div class="anuncio-titulo">🦗 Cricket Assistant — GRÁTIS!</div>
+        <p style="font-size:11px;margin-bottom:8px;">Baixe agora o companheiro virtual<br>mais fofo da internet! 💚</p>
+        <p style="font-size:10px;color:#666;margin-bottom:8px;">✅ 100% seguro &nbsp; ✅ Sem vírus &nbsp; ✅ Grátis</p>
+        <button class="btn-xp-verde" onclick="fecharAnuncios();abrirSite();" style="font-size:11px;">⬇ Baixar agora!</button>
+        &nbsp;
+        <button class="btn-xp" onclick="this.closest('.anuncio-popup').remove()" style="font-size:11px;">Fechar</button>
+      </div>
+    `;
+    document.body.appendChild(div);
+  }
+}
+
+function fecharAnuncios() {
+  document.querySelectorAll(".anuncio-popup").forEach(e => e.remove());
+}
+
+function ativarTelaAzul() {
+  fecharAnuncios();
+  const bsod = document.getElementById("telaAzul");
+  bsod.style.display = "block";
+  document.getElementById("bsodTexto").innerHTML = `
+Um problema foi detectado e o Windows foi encerrado para evitar danos ao seu computador.<br><br>
+<b>CRICKET_ASSISTANT_INSTALL_ERROR</b><br><br>
+Se esta é a primeira vez que você viu esta tela de parada,<br>
+reinicie o computador. Se a tela aparecer novamente, siga estas etapas:<br><br>
+Verifique se há novos hardwares ou softwares instalados.<br>
+Se for uma nova instalação, consulte o fabricante.<br><br>
+Informações técnicas:<br><br>
+*** STOP: 0x0000007E (0xC0000005, 0xF88D2284, 0xF8A41C70, 0xF8A41970)<br><br>
+<span style="color:#aaaaff;">Coletando informações de erro: </span><span id="bsodPct">0</span>%<br><br>
+Reiniciando em <span id="bsodTimer">5</span> segundos...
+  `;
+  // Anima porcentagem
+  let pct = 0;
+  const ivPct = setInterval(() => {
+    pct = Math.min(100, pct + Math.floor(Math.random() * 8 + 2));
+    const el = document.getElementById("bsodPct");
+    if (el) el.textContent = pct;
+    if (pct >= 100) clearInterval(ivPct);
+  }, 150);
+  // Contador regressivo
+  let timer = 5;
+  const ivTimer = setInterval(() => {
+    timer--;
+    const el = document.getElementById("bsodTimer");
+    if (el) el.textContent = timer;
+    if (timer <= 0) {
+      clearInterval(ivTimer);
+      // "Reinicia" — volta ao normal
+      setTimeout(() => {
+        bsod.style.display = "none";
+        virusCount = 0;
+        virusAtivo = false;
+        // Mostra site do grilo
+        setTimeout(() => abrirSite(), 1000);
+      }, 500);
+    }
+  }, 1000);
+}
+
+function abrirSite() {
+  const s = document.getElementById("siteGrilo");
+  s.style.display = "flex"; s.classList.add("ativo");
+}
+
+// ===== POPUP SISTEMA =====
 function mostrarPopup(titulo, mensagem, sombrio=false) {
   const p = document.getElementById("popupSistema");
   const b = document.getElementById("popupBarra");
@@ -1207,7 +1204,6 @@ function mostrarPopup(titulo, mensagem, sombrio=false) {
   }
   t.innerHTML = `<span class="titulo-icone">${sombrio ? '⚠️' : 'ℹ️'}</span> ${titulo}`;
   p.style.display = "block";
-  if (sombrio) tocarSom("somSinistro");
 }
 function fecharPopup() { document.getElementById("popupSistema").style.display = "none"; }
 
@@ -1215,13 +1211,12 @@ function fecharPopup() { document.getElementById("popupSistema").style.display =
 let falaTimer = null;
 function falar(texto, dur=4000, sombrio=false) {
   const f = document.getElementById("fala");
-  f.style.display = "block";
-  f.textContent = texto;
+  f.style.display = "block"; f.textContent = texto;
   f.className = sombrio ? "sombria" : "";
   if (sombrio) {
-    const pet = document.getElementById("pet");
-    pet.style.filter = "drop-shadow(0 0 6px rgba(200,0,0,0.6)) brightness(0.85) hue-rotate(120deg)";
-    setTimeout(() => { pet.style.filter = ""; }, dur);
+    const p = document.getElementById("pet");
+    p.style.filter = "drop-shadow(0 0 6px rgba(200,0,0,0.6)) hue-rotate(120deg)";
+    setTimeout(() => { p.style.filter = ""; }, dur);
   }
   if (falaTimer) clearTimeout(falaTimer);
   falaTimer = setTimeout(() => { f.style.display = "none"; }, dur);
@@ -1232,19 +1227,17 @@ function abrirBloco() { document.getElementById("janela").classList.remove("hidd
 function fecharBloco() { document.getElementById("janela").classList.add("hidden"); }
 
 // ===== ARQUIVO MISTERIOSO =====
-function abrirArquivoMisterioso(nome_arq, conteudo) {
-  document.getElementById("arquivoNome").textContent = nome_arq;
+function abrirArquivoMisterioso(nomeArq, conteudo) {
+  document.getElementById("arquivoNome").textContent = nomeArq;
   document.getElementById("arquivoConteudo").value = conteudo;
   const arq = document.getElementById("arquivoMisterioso");
   arq.style.display = "block";
   arq.style.top = (80 + Math.random()*80) + "px";
   arq.style.left = (120 + Math.random()*100) + "px";
-  arq.classList.add("glitch");
-  setTimeout(() => arq.classList.remove("glitch"), 500);
 }
 function fecharArquivo() { document.getElementById("arquivoMisterioso").style.display = "none"; }
 
-// ===== GOOGLE =====
+// ===== GOOGLE FUNCIONAL COM IA =====
 function abrirGoogle() {
   const g = document.getElementById("googlePage");
   g.style.display = "flex"; g.classList.add("ativo");
@@ -1254,16 +1247,76 @@ function fecharGoogle() {
   const g = document.getElementById("googlePage");
   g.style.display = "none"; g.classList.remove("ativo");
 }
-function verificarEnter(e) { if (e.key === "Enter") irParaSite(); }
-function irParaSite() {
-  const t = document.getElementById("pesquisa").value.trim();
-  if (!t) { document.getElementById("pesquisa").focus(); return; }
-  fecharGoogle();
-  setTimeout(() => {
-    const s = document.getElementById("siteGrilo");
-    s.style.display = "flex"; s.classList.add("ativo");
-  }, 300);
+function voltarGoogle() {
+  fecharResultados();
+  abrirGoogle();
 }
+function fecharResultados() {
+  const r = document.getElementById("googleResultadosOverlay");
+  r.style.display = "none"; r.classList.remove("ativo");
+}
+function verificarEnter(e) { if (e.key === "Enter") pesquisarGoogle(); }
+
+async function pesquisarGoogle() {
+  const query = document.getElementById("pesquisa").value.trim();
+  if (!query) return;
+
+  fecharGoogle();
+
+  // Mostra overlay de resultados com loading
+  const overlay = document.getElementById("googleResultadosOverlay");
+  const body = document.getElementById("googleResBody");
+  const addr = document.getElementById("googleResAddr");
+  const title = document.getElementById("googleResTitle");
+
+  overlay.style.display = "flex"; overlay.classList.add("ativo");
+  addr.value = "http://www.google.com.br/search?q=" + encodeURIComponent(query);
+  title.textContent = "Google — " + query;
+  body.innerHTML = `<div class="google-loading"><div class="google-spinner"></div>Pesquisando por "<b>${query}</b>"...</div>`;
+
+  try {
+    const resp = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        system: `Você é o Google em 2004. Gere uma página de resultados de busca HTML INTERNA (sem tags html/body/head) para a pesquisa do usuário. 
+Retorne APENAS um JSON com este formato exato (sem markdown, sem texto extra):
+{"qtd":"Cerca de X.XXX.XXX resultados (X,XX segundos)","resultados":[{"url":"http://www.exemplo.com","titulo":"Título do resultado","desc":"Descrição curta do resultado com informações relevantes sobre o tema pesquisado."},{"url":"...","titulo":"...","desc":"..."},{"url":"...","titulo":"...","desc":"..."},{"url":"...","titulo":"...","desc":"..."},{"url":"...","titulo":"...","desc":"..."}]}
+Crie 5 resultados realistas e informativos sobre o tema pesquisado, como se fosse o Google real em 2004. URLs devem parecer reais. Se a pesquisa for "cricket assistant", o primeiro resultado deve ser o site cricketassistant.com.`,
+        messages: [{ role: "user", content: "Pesquisa: " + query }]
+      })
+    });
+    const data = await resp.json();
+    const txt = data.content?.[0]?.text || "{}";
+    const clean = txt.replace(/```json|```/g, "").trim();
+    const resultado = JSON.parse(clean);
+
+    let html = `
+      <div class="google-res-header">
+        <div class="google-res-logo"><span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span></div>
+        <input class="google-res-input" value="${query}" onkeydown="if(event.key==='Enter'){document.getElementById('pesquisa').value=this.value;pesquisarGoogle()}">
+        <button class="btn-xp" onclick="document.getElementById('pesquisa').value=document.querySelector('.google-res-input').value;pesquisarGoogle()">Pesquisar</button>
+      </div>
+      <div class="google-res-qtd">${resultado.qtd || "Resultados encontrados"}</div>
+    `;
+    (resultado.resultados || []).forEach(r => {
+      html += `
+        <div class="google-resultado">
+          <div class="google-res-url">${r.url}</div>
+          <a class="google-res-titulo" href="#" onclick="return false;">${r.titulo}</a>
+          <div class="google-res-desc">${r.desc}</div>
+        </div>
+      `;
+    });
+    body.innerHTML = html;
+  } catch(e) {
+    body.innerHTML = `<div class="google-loading"><p style="color:#c00;">Ocorreu um erro ao realizar a pesquisa.<br>Verifique sua conexão com a Internet.</p></div>`;
+  }
+}
+
+// ===== SITE DO GRILO =====
 function fecharSite() {
   const s = document.getElementById("siteGrilo");
   s.style.display = "none"; s.classList.remove("ativo");
@@ -1283,17 +1336,14 @@ function baixarGrilo() {
       p = 100; bar.style.width = "100%"; txt.textContent = "100%";
       clearInterval(iv);
       setTimeout(() => { pb.classList.remove("ativo"); adicionarIconeDesktop(); }, 600);
-    } else {
-      bar.style.width = p.toFixed(0) + "%";
-      txt.textContent = p.toFixed(0) + "%";
-    }
+    } else { bar.style.width = p.toFixed(0) + "%"; txt.textContent = p.toFixed(0) + "%"; }
   }, 100);
 }
 function adicionarIconeDesktop() {
   const d = document.getElementById("desktop");
   const ic = document.createElement("div");
   ic.className = "icon";
-  ic.onclick = () => falar("Oi " + (nome||"você") + "! 🦗");
+  ic.ondblclick = () => falar("Oi " + (nome||"você") + "! 🦗");
   ic.innerHTML = `<div class="icon-img-wrap"><img src="cricket.png" onerror="this.style.display='none';this.parentNode.innerHTML='🦗'"></div><span>Cricket</span>`;
   d.appendChild(ic);
   iniciarCricket();
@@ -1328,7 +1378,7 @@ function confirmarResposta() {
     setTimeout(() => document.getElementById("dialogoInput").focus(), 100);
   } else {
     fecharDialogo();
-    setTimeout(() => encerrarConversaInicial(), 400);
+    setTimeout(encerrarConversaInicial, 400);
   }
 }
 function fecharDialogo() {
@@ -1338,131 +1388,62 @@ function fecharDialogo() {
 function encerrarConversaInicial() {
   falar("Uaaau! Que pessoa incrível você é, " + nome + "! 🦗💚", 5000);
   setTimeout(() => falar("Fico muito feliz de morar aqui com você! 😊", 4500), 5500);
-  setTimeout(() => falar("Pode me chamar quando quiser! Estou sempre aqui! 🎵", 5000), 11000);
-  // Inicia a linha do tempo de mistério
-  setTimeout(() => iniciarHistoriaMisteriosa(), 30000);
+  setTimeout(() => falar("Pode me chamar quando quiser! 🎵", 5000), 11000);
+  setTimeout(iniciarHistoriaMisteriosa, 30000);
 }
 document.addEventListener("keydown", (e) => {
   const b = document.getElementById("dialogoBox");
   if (e.key === "Enter" && b.classList.contains("ativo")) confirmarResposta();
 });
 
-// ===== HISTÓRIA MISTERIOSA — LINHA DO TEMPO =====
+// ===== HISTÓRIA MISTERIOSA =====
 let faseMisterio = 0;
 const historiaMisteriosa = [
-  // Fase 1 — algo levemente estranho
-  () => {
-    falar("Ei " + nome + "... você às vezes sente que alguém está te observando?", 6000);
-  },
-  // Fase 2 — popup estranho
-  () => {
-    mostrarPopup("Aviso do Sistema", "Um processo desconhecido foi iniciado.\nNome: cricket_watch.exe\nMemória: ██████ KB", false);
-  },
-  // Fase 3 — arquivo aparece no desktop
-  () => {
-    adicionarIconeArquivo("notas_antigas.txt");
-  },
-  // Fase 4 — fala mais sombria
-  () => {
-    falar("Não me abandone, tá? Eu... eu preciso de você aqui.", 6000, true);
-  },
-  // Fase 5 — popup sinistro
-  () => {
-    mostrarPopup("⚠️ cricket_watch.exe", "Você ainda está aí?\nEu sei que está.\nEu sempre sei.", true);
-  },
-  // Fase 6 — arquivo misterioso abre sozinho
+  () => { falar("Ei " + nome + "... você às vezes sente que alguém está te observando?", 6000); },
+  () => { mostrarPopup("Aviso do Sistema", "Um processo desconhecido foi iniciado.\nNome: cricket_watch.exe\nMemória: ██████ KB", false); },
+  () => { adicionarIconeArquivo("notas_antigas.txt"); },
+  () => { falar("Não me abandone, tá? Eu... eu preciso de você aqui.", 6000, true); },
+  () => { mostrarPopup("cricket_watch.exe", "Você ainda está aí?\nEu sei que está.\nEu sempre sei.", true); },
   () => {
     abrirArquivoMisterioso("diario_cricket.txt",
-`data: 14/03/2004
-
-hoje fui instalado no computador número 4.834.
-a pessoa se chama ${nome}.
-
-ela parece legal.
-espero que ela não me desinstale como os outros.
-os outros... foram embora.
-eu fico.
-eu sempre fico.
-
-..mas e se ela também for?`);
+`data: 14/03/2004\n\nhoje fui instalado no computador número 4.834.\na pessoa se chama ${nome}.\n\nela parece legal.\nespero que ela não me desinstale como os outros.\nos outros... foram embora.\neu fico.\neu sempre fico.\n\n..mas e se ela também for?`);
   },
-  // Fase 7 — fala no MSN de um contato estranho
+  () => { injetarMensagemMSNEstranha(); },
   () => {
-    injetarMensagemMSNEstranha();
-  },
-  // Fase 8 — grilo muda de aparência
-  () => {
-    const pet = document.getElementById("pet");
-    pet.style.filter = "hue-rotate(90deg) brightness(0.7)";
+    document.getElementById("pet").style.filter = "hue-rotate(90deg) brightness(0.7)";
     falar("Fico feliz que você ainda está aqui, " + nome + ".\nFico muito, muito feliz.", 7000, true);
   },
-  // Fase 9 — arquivo final
   () => {
     abrirArquivoMisterioso("LEIA_ISSO.txt",
-`NÃO DESINSTALE O CRICKET.
-
-por favor.
-
-ele está bem.
-ele só precisa de companhia.
-
-os outros acharam que ele era só um programa.
-ele não é só um programa.
-
-— C.`);
+`NÃO DESINSTALE O CRICKET.\n\npor favor.\n\nele está bem.\nele só precisa de companhia.\n\nos outros acharam que ele era só um programa.\nele não é só um programa.\n\n— C.`);
     mostrarPopup("cricket_watch.exe", "Obrigado por ficar.", true);
   },
 ];
-
-function iniciarHistoriaMisteriosa() {
-  dispararFaseMisterio();
-}
-function dispararFaseMisterio() {
+function iniciarHistoriaMisteriosa() { dispararFase(); }
+function dispararFase() {
   if (faseMisterio >= historiaMisteriosa.length) return;
-  historiaMisteriosa[faseMisterio]();
-  faseMisterio++;
-  // Intervalo aleatório entre 40s e 90s para cada fase
-  const prox = 40000 + Math.random() * 50000;
-  setTimeout(dispararFaseMisterio, prox);
+  historiaMisteriosa[faseMisterio](); faseMisterio++;
+  setTimeout(dispararFase, 40000 + Math.random() * 50000);
 }
-
-// Adiciona ícone de arquivo misterioso no desktop
-function adicionarIconeArquivo(nomeArquivo) {
-  const d = document.getElementById("desktop");
-  // Verifica se já existe
+function adicionarIconeArquivo(nomeArq) {
   if (document.getElementById("iconArq")) return;
+  const d = document.getElementById("desktop");
   const ic = document.createElement("div");
-  ic.className = "icon";
-  ic.id = "iconArq";
-  ic.style.animation = "glitch 0.4s ease";
-  const conteudos = {
-    "notas_antigas.txt": `algumas notas...
-
-"dia 1 — cheguei. ela/ele parece simpática(o)."
-"dia 8 — acho que ela/ele gosta de mim."
-"dia 22 — ela/ele passou o dia todo no computador. fui eu quem ficou do lado."
-"dia 45 — ..."
-"dia 45 — ..."
-"dia 45 — ..."
-`
-  };
-  ic.ondblclick = () => abrirArquivoMisterioso(nomeArquivo, conteudos[nomeArquivo] || "...");
-  ic.innerHTML = `<div class="icon-img-wrap" style="font-size:28px;">📄</div><span style="color:#ffdddd;">${nomeArquivo}</span>`;
+  ic.className = "icon"; ic.id = "iconArq";
+  const conteudo = `algumas notas...\n\n"dia 1 — cheguei. ${nome} parece simpático(a)."\n"dia 8 — acho que ela/ele gosta de mim."\n"dia 22 — passou o dia todo no computador. fui eu quem ficou do lado."\n"dia 45 — ..."\n"dia 45 — ..."\n"dia 45 — ..."`;
+  ic.ondblclick = () => abrirArquivoMisterioso(nomeArq, conteudo);
+  ic.innerHTML = `<div class="icon-img-wrap" style="font-size:28px;">📄</div><span style="color:#ffdddd;">${nomeArq}</span>`;
   d.appendChild(ic);
   falar("Que arquivo é esse...?", 3000);
 }
-
-// Injeta mensagem estranha no MSN
 function injetarMensagemMSNEstranha() {
-  // Adiciona contato estranho
-  const contatoEstranho = { id: "cricket_old", nome: "cricket_old_v0", avatar: "👁️", status: "Online", humor: "" };
   if (!msnContatos.find(c => c.id === "cricket_old")) {
-    msnContatos.push(contatoEstranho);
+    msnContatos.push({ id: "cricket_old", nome: "cricket_old_v0", avatar: "👁️", status: "Online", humor: "" });
     msnHistoricos["cricket_old"] = [
-      { role: "assistant", content: "oi" },
-      { role: "assistant", content: "você conhece o cricket?" },
-      { role: "assistant", content: "eu era o cricket. antes." },
-      { role: "assistant", content: "tome cuidado." },
+      { role:"assistant", content:"oi" },
+      { role:"assistant", content:"você conhece o cricket?" },
+      { role:"assistant", content:"eu era o cricket. antes." },
+      { role:"assistant", content:"tome cuidado." },
     ];
     renderizarContatos();
     mostrarPopup("MSN Messenger", "Nova mensagem de: cricket_old_v0", false);
@@ -1471,9 +1452,7 @@ function injetarMensagemMSNEstranha() {
 
 // ===== GRILO ANDANDO =====
 let griloX = window.innerWidth - 110, griloY = window.innerHeight - 110;
-let griloDX = 1.1, griloDY = 0.7;
-let griloFlipado = false, griloMovendo = false;
-
+let griloDX = 1.1, griloDY = 0.7, griloFlipado = false, griloMovendo = false;
 const falasSpontaneas = [
   ["Olá! 😊 Como você está?", false],
   ["Tô aqui ó! 🦗", false],
@@ -1485,28 +1464,21 @@ const falasSpontaneas = [
   ["Vamo bater um papo? 😁", false],
   ["Já usou o MSN hoje?", false],
   ["🎵 La la la la laaa~", false],
-  // Falas levemente estranhas (aparecem depois da fase 4)
   ["Você não vai embora, né?", true],
   ["Às vezes fico com medo de ficar sozinho...", true],
   ["Por que os outros foram embora...?", true],
 ];
-
 function iniciarGriloAndando() {
   const pw = document.getElementById("petWrap");
-  pw.style.position = "fixed";
-  pw.style.left = griloX + "px";
-  pw.style.top = griloY + "px";
-  pw.style.display = "flex";
+  pw.style.position = "fixed"; pw.style.left = griloX + "px"; pw.style.top = griloY + "px"; pw.style.display = "flex";
   document.getElementById("pet").onclick = abrirGriloChat;
   document.getElementById("petEmoji").onclick = abrirGriloChat;
-  griloMovendo = true;
-  moverGrilo();
+  griloMovendo = true; moverGrilo();
   setInterval(() => {
     if (Math.random() < 0.5) {
-      // Falas sombrias só aparecem depois da fase 4
-      const disponiveis = falasSpontaneas.filter(f => !f[1] || faseMisterio >= 4);
-      const escolhida = disponiveis[Math.floor(Math.random() * disponiveis.length)];
-      falar(escolhida[0], 4500, escolhida[1]);
+      const disp = falasSpontaneas.filter(f => !f[1] || faseMisterio >= 4);
+      const esc = disp[Math.floor(Math.random() * disp.length)];
+      falar(esc[0], 4500, esc[1]);
     }
   }, 14000);
 }
@@ -1520,10 +1492,9 @@ function moverGrilo() {
   if (griloX >= maxX) { griloX = maxX; griloDX = -Math.abs(griloDX); griloFlipado = true; }
   if (griloY <= 0) { griloY = 0; griloDY = Math.abs(griloDY); }
   if (griloY >= maxY) { griloY = maxY; griloDY = -Math.abs(griloDY); }
-  if (Math.random() < 0.003) griloDX = (Math.random() - 0.5) * 2.8;
-  if (Math.random() < 0.003) griloDY = (Math.random() - 0.5) * 2;
-  pw.style.left = griloX + "px";
-  pw.style.top = griloY + "px";
+  if (Math.random() < 0.003) griloDX = (Math.random()-0.5)*2.8;
+  if (Math.random() < 0.003) griloDY = (Math.random()-0.5)*2;
+  pw.style.left = griloX + "px"; pw.style.top = griloY + "px";
   const img = document.getElementById("pet");
   img.style.transform = griloFlipado ? "scaleX(-1)" : "scaleX(1)";
   document.getElementById("petEmoji").style.transform = img.style.transform;
@@ -1535,75 +1506,70 @@ function moverGrilo() {
   requestAnimationFrame(moverGrilo);
 }
 
-// ===== CHAT COM O GRILO =====
-let griloChatHistorico = [];
-
+// ===== CHAT COM GRILO =====
+let griloChatHist = [];
 function abrirGriloChat() {
   const chat = document.getElementById("griloChat");
   chat.style.display = "block";
   chat.style.left = Math.min(griloX + 86, window.innerWidth - 280) + "px";
   chat.style.top = Math.max(10, griloY - 250) + "px";
-  if (griloChatHistorico.length === 0) {
-    const s = "Oi " + (nome||"você") + "! 🦗 Que bom que você clicou em mim! O que quer falar?";
-    adicionarMsgGriloChatLocal(s, false);
-    griloChatHistorico.push({ role: "assistant", content: s });
+  if (griloChatHist.length === 0) {
+    const s = "Oi " + (nome||"você") + "! 🦗 Que bom que você clicou em mim!";
+    addMsgGrilo(s, false); griloChatHist.push({ role:"assistant", content:s });
   }
   setTimeout(() => document.getElementById("griloChatInput").focus(), 100);
 }
-function fecharGriloChat() { document.getElementById("griloChat").style.display = "none"; }
 
-function adicionarMsgGriloChatLocal(texto, estranho=false) {
+function fecharGriloChat() { document.getElementById("griloChat").style.display = "none"; }
+function addMsgGrilo(texto, estranho=false) {
   const msgs = document.getElementById("griloChatMsgs");
   const d = document.createElement("div");
-  d.className = "msg-grilo" + (estranho ? " estranho" : "");
+  d.className = "msg-grilo" + (estranho ? " estranho":"");
   d.innerHTML = "<b>🦗 Cricket:</b> " + texto;
   msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
 }
-function adicionarMsgUserGriloChat(texto) {
+function addMsgUser(texto) {
   const msgs = document.getElementById("griloChatMsgs");
-  const d = document.createElement("div");
-  d.className = "msg-user";
+  const d = document.createElement("div"); d.className = "msg-user";
   d.innerHTML = "<b>" + (nome||"Você") + ":</b> " + texto;
   msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
 }
+
 async function enviarMsgGrilo() {
   const inp = document.getElementById("griloChatInput"), txt = inp.value.trim();
   if (!txt) return;
-  inp.value = "";
-  adicionarMsgUserGriloChat(txt);
-  griloChatHistorico.push({ role: "user", content: txt });
+  inp.value = ""; addMsgUser(txt);
+  griloChatHist.push({ role:"user", content:txt });
   const msgs = document.getElementById("griloChatMsgs");
   const typing = document.createElement("div");
-  typing.id = "griloTyping"; typing.className = "msg-grilo"; typing.style.fontStyle="italic"; typing.style.color="#888";
-  typing.textContent = "🦗 Cricket está digitando...";
-  msgs.appendChild(typing); msgs.scrollTop = msgs.scrollHeight;
-  const faseSinistro = faseMisterio >= 4;
-  const systemPrompt = faseSinistro
-    ? `Você é Cricket, um grilo virtual que vive no computador do usuário. Nas fases iniciais você era alegre, mas agora existe algo levemente perturbador em você — você faz perguntas sobre abandono, diz que "precisa" do usuário, menciona que "os outros foram embora". Ainda usa emojis 🦗 mas às vezes soa melancólico ou intenso. Máximo 2 frases. Nome do usuário: ${nome||"desconhecido"}.`
-    : `Você é Cricket, um grilo virtual fofo e amigável no desktop do usuário. Alegre, caloroso, usa emojis, responde curto e animado (máximo 2 frases). Nome do usuário: ${nome||"desconhecido"}.`;
+  typing.id="griloTyping"; typing.className="msg-grilo"; typing.style.fontStyle="italic"; typing.style.color="#888";
+  typing.textContent="🦗 Cricket está digitando..."; msgs.appendChild(typing); msgs.scrollTop=msgs.scrollHeight;
+  const sinistro = faseMisterio >= 4;
+  const sys = sinistro
+    ? `Você é Cricket, um grilo virtual que virou levemente perturbador. Faz perguntas sobre abandono, diz que precisa do usuário, menciona "os outros que foram embora". Ainda usa emojis 🦗 mas às vezes soa melancólico ou intenso. Máximo 2 frases. Usuário: ${nome||"desconhecido"}.`
+    : `Você é Cricket, um grilo virtual fofo e amigável no desktop. Alegre, caloroso, usa emojis, responde curto e animado (máximo 2 frases). Usuário: ${nome||"desconhecido"}.`;
   try {
     const resp = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 1000, system: systemPrompt, messages: griloChatHistorico })
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:1000, system:sys, messages:griloChatHist })
     });
     const data = await resp.json();
     const t = document.getElementById("griloTyping"); if(t) t.remove();
-    const resposta = data.content?.[0]?.text || "...";
-    griloChatHistorico.push({ role: "assistant", content: resposta });
-    adicionarMsgGriloChatLocal(resposta, faseSinistro);
-    falar(resposta.slice(0,60) + (resposta.length>60?"...":""), 4000, faseSinistro);
+    const r = data.content?.[0]?.text || "...";
+    griloChatHist.push({ role:"assistant", content:r });
+    addMsgGrilo(r, sinistro);
+    falar(r.slice(0,60)+(r.length>60?"...":""), 4000, sinistro);
   } catch(e) {
     const t = document.getElementById("griloTyping"); if(t) t.remove();
-    adicionarMsgGriloChatLocal("...não consigo responder agora.", faseSinistro);
+    addMsgGrilo("...não consigo responder agora.", sinistro);
   }
 }
 
-// ===== MSN MESSENGER =====
+// ===== MSN =====
 const msnContatos = [
-  { id: "jehan", nome: "Jehan",  avatar: "👦", status: "Online - Ouvindo música 🎵", humor: "extrovertido e engraçado, usa gírias jovens e abreviações do MSN" },
-  { id: "enzo",  nome: "Enzo",   avatar: "😎", status: "Online - Jogando 🎮",         humor: "gamer apaixonado, fala muito de jogos e usa termos gamer" },
-  { id: "joao",  nome: "João",   avatar: "🤓", status: "Online - Estudando 📚",       humor: "estudioso e curioso, gosta de aprender e fazer perguntas" },
+  { id:"jehan", nome:"Jehan",  avatar:"👦", status:"Online - Ouvindo música 🎵", humor:"extrovertido e engraçado, usa gírias jovens e abreviações do MSN tipo kkk, rsrs, hm, xD" },
+  { id:"enzo",  nome:"Enzo",   avatar:"😎", status:"Online - Jogando 🎮",         humor:"gamer apaixonado, fala de jogos, usa termos gamer e abreviações tipo gg, ez, noob" },
+  { id:"joao",  nome:"João",   avatar:"🤓", status:"Online - Estudando 📚",       humor:"estudioso e curioso, gosta de aprender, usa linguagem um pouco mais formal mas ainda casual" },
 ];
 let msnContatoAtual = null;
 let msnHistoricos = { jehan:[], enzo:[], joao:[], cricket_old:[] };
@@ -1618,52 +1584,50 @@ function fecharMSN() {
   document.getElementById("msnApp").classList.remove("ativo");
 }
 function renderizarContatos() {
-  const lista = document.getElementById("msnContatos");
-  lista.innerHTML = "";
+  const lista = document.getElementById("msnContatos"); lista.innerHTML="";
   msnContatos.forEach(c => {
     const div = document.createElement("div");
-    div.className = "msn-contato" + (msnContatoAtual===c.id ? " selecionado":"");
-    const estilo = c.id === "cricket_old" ? "color:#ffaaaa;" : "";
-    div.innerHTML = `<div class="msn-contato-avatar" style="${estilo}">${c.avatar}</div><div class="msn-contato-info"><div class="msn-cont-nome" style="${estilo}">${c.nome}</div><div class="msn-cont-status">${c.status}</div></div>`;
+    div.className = "msn-contato" + (msnContatoAtual===c.id?" selecionado":"");
+    const s = c.id==="cricket_old" ? "color:#ffaaaa;" : "";
+    div.innerHTML = `<div class="msn-contato-avatar" style="${s}">${c.avatar}</div><div class="msn-contato-info"><div class="msn-cont-nome" style="${s}">${c.nome}</div><div class="msn-cont-status">${c.status}</div></div>`;
     div.onclick = () => selecionarContatoMSN(c.id);
     lista.appendChild(div);
   });
 }
 function selecionarContatoMSN(id) {
   msnContatoAtual = id;
-  const c = msnContatos.find(x => x.id === id);
-  document.getElementById("msnSemChat").style.display = "none";
-  document.getElementById("msnChatConteudo").style.display = "flex";
-  document.getElementById("msnChatAvatar").textContent = c.avatar;
-  document.getElementById("msnChatNome").textContent = c.nome;
-  document.getElementById("msnChatDesc").textContent = c.status;
-  if (!msnHistoricos[id]) msnHistoricos[id] = [];
-  renderizarMensagensMSN(id);
-  renderizarContatos();
-  if (msnHistoricos[id].length === 0) setTimeout(() => botMSNEnviaPrimeiro(id), 600);
-  setTimeout(() => document.getElementById("msnInput").focus(), 100);
+  const c = msnContatos.find(x=>x.id===id);
+  document.getElementById("msnSemChat").style.display="none";
+  document.getElementById("msnChatConteudo").style.display="flex";
+  document.getElementById("msnChatAvatar").textContent=c.avatar;
+  document.getElementById("msnChatNome").textContent=c.nome;
+  document.getElementById("msnChatDesc").textContent=c.status;
+  if (!msnHistoricos[id]) msnHistoricos[id]=[];
+  renderizarMensagensMSN(id); renderizarContatos();
+  if (msnHistoricos[id].length===0) setTimeout(()=>botMSNPrimeiro(id), 600);
+  setTimeout(()=>document.getElementById("msnInput").focus(), 100);
 }
-function botMSNEnviaPrimeiro(id) {
+function botMSNPrimeiro(id) {
   const prims = {
     jehan:"Ei!! vc sumiu kkkk tava te esperando aqui 😂",
-    enzo:"Fala aí! Acabei de passar de fase no jogo 🎮🔥 vc joga?",
+    enzo:"Fala aí! Acabei de passar de fase 🎮🔥 vc joga?",
     joao:"Oi! Tava lendo sobre um assunto interessante, quer ver? 📖",
     cricket_old:"oi"
   };
-  msnHistoricos[id].push({ role:"assistant", content: prims[id]||"oi" });
+  msnHistoricos[id].push({ role:"assistant", content:prims[id]||"oi" });
   if(msnContatoAtual===id) renderizarMensagensMSN(id);
 }
 function renderizarMensagensMSN(id) {
   const msgs = document.getElementById("msnMsgs"); if(!msgs) return;
-  msgs.innerHTML = "";
+  msgs.innerHTML="";
   const c = msnContatos.find(x=>x.id===id);
   (msnHistoricos[id]||[]).forEach(m => {
     const div = document.createElement("div"); div.className="msn-msg";
     const isBot = m.role==="assistant";
     const nomeMsg = isBot ? c.nome : (nome||"Você");
-    const clsNome = isBot ? (id==="cricket_old" ? "bot estranho" : "bot") : "eu";
-    const clsTxt  = id==="cricket_old" && isBot ? "estranho" : "";
-    div.innerHTML = `<span class="msn-msg-nome ${clsNome}">${nomeMsg}:</span> <span class="msn-msg-texto ${clsTxt}">${m.content}</span>`;
+    const clsN = isBot ? (id==="cricket_old"?"bot estranho":"bot") : "eu";
+    const clsT = id==="cricket_old"&&isBot ? "estranho" : "";
+    div.innerHTML = `<span class="msn-msg-nome ${clsN}">${nomeMsg}:</span> <span class="msn-msg-texto ${clsT}">${m.content}</span>`;
     msgs.appendChild(div);
   });
   msgs.scrollTop = msgs.scrollHeight;
@@ -1671,8 +1635,7 @@ function renderizarMensagensMSN(id) {
 function mostrarTypingMSN(id) {
   const msgs = document.getElementById("msnMsgs"); if(!msgs) return;
   const t = document.createElement("div"); t.id="msnTyping"; t.className="msn-typing";
-  const c = msnContatos.find(x=>x.id===id);
-  t.textContent=(c?c.nome:"Contato")+" está digitando...";
+  t.textContent=(msnContatos.find(x=>x.id===id)?.nome||"Contato")+" está digitando...";
   msgs.appendChild(t); msgs.scrollTop=msgs.scrollHeight;
 }
 function removerTypingMSN() { const t=document.getElementById("msnTyping"); if(t)t.remove(); }
@@ -1680,7 +1643,7 @@ function msnEnterEnviar(e) { if(e.key==="Enter"&&!e.shiftKey){e.preventDefault()
 
 async function enviarMsgMSN() {
   if(!msnContatoAtual) return;
-  const inp=document.getElementById("msnInput"), txt=inp.value.trim();
+  const inp = document.getElementById("msnInput"), txt=inp.value.trim();
   if(!txt) return;
   inp.value="";
   msnHistoricos[msnContatoAtual].push({role:"user",content:txt});
@@ -1688,198 +1651,76 @@ async function enviarMsgMSN() {
   const id=msnContatoAtual;
   const c=msnContatos.find(x=>x.id===id);
 
-  // cricket_old responde de forma pré-definida apenas
+  // cricket_old responde com mensagens pré-definidas
   if(id==="cricket_old") {
     mostrarTypingMSN(id);
-    const respostasOld = [
-      "ele guarda tudo que você diz.",
-      "não sei se devo te contar...",
-      "só saia antes que ele perceba que você sabe.",
-      "...",
-      "muito tarde?"
-    ];
-    const r = respostasOld[Math.floor(Math.random()*respostasOld.length)];
+    const opts=["ele guarda tudo que você diz.","não sei se devo te contar...","só saia antes que ele perceba.","...","muito tarde?","você tem certeza que ele é só um programa?"];
+    const r=opts[Math.floor(Math.random()*opts.length)];
     setTimeout(()=>{
       removerTypingMSN();
       msnHistoricos[id].push({role:"assistant",content:r});
       if(msnContatoAtual===id) renderizarMensagensMSN(id);
-    }, 1500 + Math.random()*1500);
+    }, 1500+Math.random()*1500);
     return;
   }
 
   mostrarTypingMSN(id);
   try {
     const resp = await fetch("https://api.anthropic.com/v1/messages",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
+      method:"POST", headers:{"Content-Type":"application/json"},
       body:JSON.stringify({
         model:"claude-sonnet-4-20250514", max_tokens:1000,
-        system:`Você é ${c.nome}, um amigo(a) real numa conversa de MSN Messenger em 2005. Jeito: ${c.humor}. Responda curto e informal (1-3 frases). Use abreviações e emoticons de MSN (:-), :D, xD, kkk, rsrs, hm). O nome do usuário é: ${nome||"colega"}.`,
+        system:`Você é ${c.nome}, um(a) amigo(a) real conversando no MSN Messenger em 2005. Jeito: ${c.humor}. IMPORTANTE: Responda SEMPRE de forma coerente com o que o usuário disse. Se ele fizer uma pergunta, responda a pergunta. Se ele contar algo, reaja ao que ele contou. Mantenha o contexto da conversa. Use linguagem informal (1-3 frases). O nome do usuário é: ${nome||"colega"}.`,
         messages:msnHistoricos[id]
       })
     });
     const data=await resp.json();
     removerTypingMSN();
-    const resposta=data.content?.[0]?.text||"...";
-    msnHistoricos[id].push({role:"assistant",content:resposta});
+    const r=data.content?.[0]?.text||"...";
+    msnHistoricos[id].push({role:"assistant",content:r});
     if(msnContatoAtual===id) renderizarMensagensMSN(id);
   } catch(e) {
     removerTypingMSN();
-    const err="eita, caiu minha net kkk";
-    msnHistoricos[id].push({role:"assistant",content:err});
+    // Não mostra mais "caiu minha net" — tenta de novo silenciosamente
+    msnHistoricos[id].push({role:"assistant",content:"oi, pode repetir? 😅"});
     if(msnContatoAtual===id) renderizarMensagensMSN(id);
   }
 }
 
 // ===== TETRIS =====
-let tetrisAtivo=false, tetrisPausado=false;
-let tetrisBoard, tetrisPeca, tetrisPecaProxima;
-let tetrisPts, tetrisLins, tetrisNiv, tetrisVel, tetrisIv;
-let tetrisHiScore=0;
-const COLS=10, ROWS=20, SZ=20;
+let tetrisAtivo=false,tetrisPausado=false;
+let tetrisBoard,tetrisPeca,tetrisPecaProx;
+let tetrisPts=0,tetrisLins=0,tetrisNiv=1,tetrisVel=500,tetrisIv;
+let tetrisHi=0;
+const COLS=10,ROWS=20,SZ=20;
 const PECAS=[
-  {shape:[[1,1,1,1]],cor:"#00f0f0"},
-  {shape:[[1,1],[1,1]],cor:"#f0f000"},
-  {shape:[[0,1,0],[1,1,1]],cor:"#a000f0"},
-  {shape:[[1,0,0],[1,1,1]],cor:"#f0a000"},
-  {shape:[[0,0,1],[1,1,1]],cor:"#0000f0"},
-  {shape:[[0,1,1],[1,1,0]],cor:"#00f000"},
+  {shape:[[1,1,1,1]],cor:"#00f0f0"},{shape:[[1,1],[1,1]],cor:"#f0f000"},
+  {shape:[[0,1,0],[1,1,1]],cor:"#a000f0"},{shape:[[1,0,0],[1,1,1]],cor:"#f0a000"},
+  {shape:[[0,0,1],[1,1,1]],cor:"#0000f0"},{shape:[[0,1,1],[1,1,0]],cor:"#00f000"},
   {shape:[[1,1,0],[0,1,1]],cor:"#f00000"},
 ];
 function novaBoard(){return Array.from({length:ROWS},()=>Array(COLS).fill(0));}
-function pecaAl(){
-  const p=PECAS[Math.floor(Math.random()*PECAS.length)];
-  return{shape:p.shape.map(r=>[...r]),cor:p.cor,x:Math.floor(COLS/2)-Math.floor(p.shape[0].length/2),y:0};
-}
-function abrirTetris(){
-  document.getElementById("tetrisApp").style.display="flex";
-  document.getElementById("tetrisApp").classList.add("ativo");
-  document.getElementById("tetrisHiScore").textContent=tetrisHiScore;
-}
-function fecharTetris(){
-  document.getElementById("tetrisApp").style.display="none";
-  document.getElementById("tetrisApp").classList.remove("ativo");
-  if(tetrisIv){clearInterval(tetrisIv);tetrisAtivo=false;}
-}
-function iniciarTetris(){
-  tetrisBoard=novaBoard(); tetrisPts=0; tetrisLins=0; tetrisNiv=1; tetrisVel=500;
-  tetrisPecaProxima=pecaAl(); tetrisPeca=pecaAl();
-  tetrisAtivo=true; tetrisPausado=false;
-  atualizarPlacar();
-  document.getElementById("tetrisMenu").style.display="none";
-  document.getElementById("tetrisGameOver").style.display="none";
-  document.getElementById("tetrisJogo").style.display="block";
-  if(tetrisIv)clearInterval(tetrisIv);
-  tetrisIv=setInterval(tetrisStep,tetrisVel);
-  desenhar();
-}
-function pausarTetris(){
-  if(!tetrisAtivo)return;
-  tetrisPausado=!tetrisPausado;
-  if(tetrisPausado)clearInterval(tetrisIv);
-  else tetrisIv=setInterval(tetrisStep,tetrisVel);
-}
+function pecaAl(){const p=PECAS[Math.floor(Math.random()*PECAS.length)];return{shape:p.shape.map(r=>[...r]),cor:p.cor,x:Math.floor(COLS/2)-Math.floor(p.shape[0].length/2),y:0};}
+function abrirTetris(){document.getElementById("tetrisApp").style.display="flex";document.getElementById("tetrisApp").classList.add("ativo");document.getElementById("tetrisHiScore").textContent=tetrisHi;}
+function fecharTetris(){document.getElementById("tetrisApp").style.display="none";document.getElementById("tetrisApp").classList.remove("ativo");if(tetrisIv){clearInterval(tetrisIv);tetrisAtivo=false;}}
+function iniciarTetris(){tetrisBoard=novaBoard();tetrisPts=0;tetrisLins=0;tetrisNiv=1;tetrisVel=500;tetrisPecaProx=pecaAl();tetrisPeca=pecaAl();tetrisAtivo=true;tetrisPausado=false;atualizarPlacar();document.getElementById("tetrisMenu").style.display="none";document.getElementById("tetrisGameOver").style.display="none";document.getElementById("tetrisJogo").style.display="block";if(tetrisIv)clearInterval(tetrisIv);tetrisIv=setInterval(tetrisStep,tetrisVel);desenhar();}
+function pausarTetris(){if(!tetrisAtivo)return;tetrisPausado=!tetrisPausado;if(tetrisPausado)clearInterval(tetrisIv);else tetrisIv=setInterval(tetrisStep,tetrisVel);}
 function reiniciarTetris(){if(tetrisIv)clearInterval(tetrisIv);iniciarTetris();}
-function gameOverT(){
-  tetrisAtivo=false; clearInterval(tetrisIv);
-  if(tetrisPts>tetrisHiScore){tetrisHiScore=tetrisPts;document.getElementById("tetrisHiScore").textContent=tetrisHiScore;}
-  document.getElementById("tetrisFinalPontos").textContent=tetrisPts;
-  document.getElementById("tetrisJogo").style.display="none";
-  document.getElementById("tetrisGameOver").style.display="block";
-}
-function atualizarPlacar(){
-  document.getElementById("tetrisPontos").textContent=tetrisPts;
-  document.getElementById("tetrisLinhas").textContent=tetrisLins;
-  document.getElementById("tetrisNivel").textContent=tetrisNiv;
-}
-function colide(p,b,dx=0,dy=0){
-  for(let r=0;r<p.shape.length;r++)for(let c=0;c<p.shape[r].length;c++){
-    if(!p.shape[r][c])continue;
-    const nx=p.x+c+dx,ny=p.y+r+dy;
-    if(nx<0||nx>=COLS||ny>=ROWS)return true;
-    if(ny>=0&&b[ny][nx])return true;
-  }
-  return false;
-}
-function fixar(){
-  for(let r=0;r<tetrisPeca.shape.length;r++)for(let c=0;c<tetrisPeca.shape[r].length;c++){
-    if(tetrisPeca.shape[r][c]){
-      const ny=tetrisPeca.y+r;
-      if(ny<0){gameOverT();return;}
-      tetrisBoard[ny][tetrisPeca.x+c]=tetrisPeca.cor;
-    }
-  }
-  limpar();
-  tetrisPeca=tetrisPecaProxima; tetrisPecaProxima=pecaAl();
-  if(colide(tetrisPeca,tetrisBoard)){gameOverT();}
-}
-function limpar(){
-  let q=0;
-  for(let r=ROWS-1;r>=0;r--){
-    if(tetrisBoard[r].every(c=>c!==0)){
-      tetrisBoard.splice(r,1); tetrisBoard.unshift(Array(COLS).fill(0));
-      q++;r++;
-    }
-  }
-  if(q>0){
-    tetrisPts+=[0,100,300,500,800][q]*tetrisNiv;
-    tetrisLins+=q; tetrisNiv=Math.floor(tetrisLins/10)+1;
-    const nv=Math.max(80,500-(tetrisNiv-1)*40);
-    if(nv!==tetrisVel){tetrisVel=nv;clearInterval(tetrisIv);tetrisIv=setInterval(tetrisStep,tetrisVel);}
-    atualizarPlacar();
-  }
-}
-function tetrisStep(){
-  if(!tetrisAtivo||tetrisPausado)return;
-  if(!colide(tetrisPeca,tetrisBoard,0,1))tetrisPeca.y++;
-  else fixar();
-  desenhar();
-}
-function girar(p){
-  const rows=p.shape.length,cols=p.shape[0].length;
-  const n=Array.from({length:cols},()=>Array(rows).fill(0));
-  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++)n[c][rows-1-r]=p.shape[r][c];
-  return n;
-}
+function gameOverT(){tetrisAtivo=false;clearInterval(tetrisIv);if(tetrisPts>tetrisHi){tetrisHi=tetrisPts;document.getElementById("tetrisHiScore").textContent=tetrisHi;}document.getElementById("tetrisFinalPontos").textContent=tetrisPts;document.getElementById("tetrisJogo").style.display="none";document.getElementById("tetrisGameOver").style.display="block";}
+function atualizarPlacar(){document.getElementById("tetrisPontos").textContent=tetrisPts;document.getElementById("tetrisLinhas").textContent=tetrisLins;document.getElementById("tetrisNivel").textContent=tetrisNiv;}
+function colide(p,b,dx=0,dy=0){for(let r=0;r<p.shape.length;r++)for(let c=0;c<p.shape[r].length;c++){if(!p.shape[r][c])continue;const nx=p.x+c+dx,ny=p.y+r+dy;if(nx<0||nx>=COLS||ny>=ROWS)return true;if(ny>=0&&b[ny][nx])return true;}return false;}
+function fixar(){for(let r=0;r<tetrisPeca.shape.length;r++)for(let c=0;c<tetrisPeca.shape[r].length;c++){if(tetrisPeca.shape[r][c]){const ny=tetrisPeca.y+r;if(ny<0){gameOverT();return;}tetrisBoard[ny][tetrisPeca.x+c]=tetrisPeca.cor;}}limpar();tetrisPeca=tetrisPecaProx;tetrisPecaProx=pecaAl();if(colide(tetrisPeca,tetrisBoard))gameOverT();}
+function limpar(){let q=0;for(let r=ROWS-1;r>=0;r--){if(tetrisBoard[r].every(c=>c!==0)){tetrisBoard.splice(r,1);tetrisBoard.unshift(Array(COLS).fill(0));q++;r++;}}if(q>0){tetrisPts+=[0,100,300,500,800][q]*tetrisNiv;tetrisLins+=q;tetrisNiv=Math.floor(tetrisLins/10)+1;const nv=Math.max(80,500-(tetrisNiv-1)*40);if(nv!==tetrisVel){tetrisVel=nv;clearInterval(tetrisIv);tetrisIv=setInterval(tetrisStep,tetrisVel);}atualizarPlacar();}}
+function tetrisStep(){if(!tetrisAtivo||tetrisPausado)return;if(!colide(tetrisPeca,tetrisBoard,0,1))tetrisPeca.y++;else fixar();desenhar();}
+function girar(p){const rows=p.shape.length,cols=p.shape[0].length,n=Array.from({length:cols},()=>Array(rows).fill(0));for(let r=0;r<rows;r++)for(let c=0;c<cols;c++)n[c][rows-1-r]=p.shape[r][c];return n;}
 function desenhar(){
-  const cv=document.getElementById("tetrisCanvas"); if(!cv)return;
+  const cv=document.getElementById("tetrisCanvas");if(!cv)return;
   const ctx=cv.getContext("2d");
-  ctx.fillStyle="#080814"; ctx.fillRect(0,0,cv.width,cv.height);
+  ctx.fillStyle="#080814";ctx.fillRect(0,0,cv.width,cv.height);
   ctx.strokeStyle="#1a2030";
-  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
-    ctx.strokeRect(c*SZ,r*SZ,SZ,SZ);
-    if(tetrisBoard[r][c]){
-      ctx.fillStyle=tetrisBoard[r][c]; ctx.fillRect(c*SZ+1,r*SZ+1,SZ-2,SZ-2);
-      ctx.fillStyle="rgba(255,255,255,0.2)"; ctx.fillRect(c*SZ+1,r*SZ+1,SZ-2,5);
-      ctx.fillStyle="rgba(0,0,0,0.2)"; ctx.fillRect(c*SZ+1,r*SZ+SZ-6,SZ-2,5);
-    }
-  }
-  if(tetrisPeca){
-    let sy=tetrisPeca.y;
-    while(!colide(tetrisPeca,tetrisBoard,0,sy-tetrisPeca.y+1))sy++;
-    for(let r=0;r<tetrisPeca.shape.length;r++)for(let c=0;c<tetrisPeca.shape[r].length;c++){
-      if(!tetrisPeca.shape[r][c])continue;
-      ctx.fillStyle="rgba(255,255,255,0.08)";
-      ctx.fillRect((tetrisPeca.x+c)*SZ+1,(sy+r)*SZ+1,SZ-2,SZ-2);
-    }
-    for(let r=0;r<tetrisPeca.shape.length;r++)for(let c=0;c<tetrisPeca.shape[r].length;c++){
-      if(!tetrisPeca.shape[r][c])continue;
-      const px=(tetrisPeca.x+c)*SZ,py=(tetrisPeca.y+r)*SZ;
-      ctx.fillStyle=tetrisPeca.cor; ctx.fillRect(px+1,py+1,SZ-2,SZ-2);
-      ctx.fillStyle="rgba(255,255,255,0.3)"; ctx.fillRect(px+1,py+1,SZ-2,5);
-      ctx.fillStyle="rgba(0,0,0,0.2)"; ctx.fillRect(px+1,py+SZ-6,SZ-2,5);
-    }
-  }
-  const nc=document.getElementById("nextCanvas");
-  if(nc&&tetrisPecaProxima){
-    const nctx=nc.getContext("2d");
-    nctx.fillStyle="#080814"; nctx.fillRect(0,0,nc.width,nc.height);
-    const s=16,ox=(nc.width-tetrisPecaProxima.shape[0].length*s)/2,oy=(nc.height-tetrisPecaProxima.shape.length*s)/2;
-    for(let r=0;r<tetrisPecaProxima.shape.length;r++)for(let c=0;c<tetrisPecaProxima.shape[r].length;c++){
-      if(!tetrisPecaProxima.shape[r][c])continue;
-      nctx.fillStyle=tetrisPecaProxima.cor; nctx.fillRect(ox+c*s+1,oy+r*s+1,s-2,s-2);
-    }
-  }
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){ctx.strokeRect(c*SZ,r*SZ,SZ,SZ);if(tetrisBoard[r][c]){ctx.fillStyle=tetrisBoard[r][c];ctx.fillRect(c*SZ+1,r*SZ+1,SZ-2,SZ-2);ctx.fillStyle="rgba(255,255,255,0.2)";ctx.fillRect(c*SZ+1,r*SZ+1,SZ-2,5);ctx.fillStyle="rgba(0,0,0,0.2)";ctx.fillRect(c*SZ+1,r*SZ+SZ-6,SZ-2,5);}}
+  if(tetrisPeca){let sy=tetrisPeca.y;while(!colide(tetrisPeca,tetrisBoard,0,sy-tetrisPeca.y+1))sy++;for(let r=0;r<tetrisPeca.shape.length;r++)for(let c=0;c<tetrisPeca.shape[r].length;c++){if(!tetrisPeca.shape[r][c])continue;ctx.fillStyle="rgba(255,255,255,0.08)";ctx.fillRect((tetrisPeca.x+c)*SZ+1,(sy+r)*SZ+1,SZ-2,SZ-2);}for(let r=0;r<tetrisPeca.shape.length;r++)for(let c=0;c<tetrisPeca.shape[r].length;c++){if(!tetrisPeca.shape[r][c])continue;const px=(tetrisPeca.x+c)*SZ,py=(tetrisPeca.y+r)*SZ;ctx.fillStyle=tetrisPeca.cor;ctx.fillRect(px+1,py+1,SZ-2,SZ-2);ctx.fillStyle="rgba(255,255,255,0.3)";ctx.fillRect(px+1,py+1,SZ-2,5);ctx.fillStyle="rgba(0,0,0,0.2)";ctx.fillRect(px+1,py+SZ-6,SZ-2,5);}}
+  const nc=document.getElementById("nextCanvas");if(nc&&tetrisPecaProx){const nctx=nc.getContext("2d");nctx.fillStyle="#080814";nctx.fillRect(0,0,nc.width,nc.height);const s=16,ox=(nc.width-tetrisPecaProx.shape[0].length*s)/2,oy=(nc.height-tetrisPecaProx.shape.length*s)/2;for(let r=0;r<tetrisPecaProx.shape.length;r++)for(let c=0;c<tetrisPecaProx.shape[r].length;c++){if(!tetrisPecaProx.shape[r][c])continue;nctx.fillStyle=tetrisPecaProx.cor;nctx.fillRect(ox+c*s+1,oy+r*s+1,s-2,s-2);}}
 }
 document.addEventListener("keydown",(e)=>{
   const ta=document.getElementById("tetrisApp");
@@ -1888,15 +1729,128 @@ document.addEventListener("keydown",(e)=>{
   if(e.key==="ArrowLeft"&&!colide(tetrisPeca,tetrisBoard,-1,0)){tetrisPeca.x--;desenhar();}
   else if(e.key==="ArrowRight"&&!colide(tetrisPeca,tetrisBoard,1,0)){tetrisPeca.x++;desenhar();}
   else if(e.key==="ArrowDown"){if(!colide(tetrisPeca,tetrisBoard,0,1)){tetrisPeca.y++;tetrisPts++;atualizarPlacar();}desenhar();}
-  else if(e.key==="ArrowUp"){
-    const n=girar(tetrisPeca),tmp={...tetrisPeca,shape:n};
-    if(!colide(tmp,tetrisBoard)){tetrisPeca.shape=n;desenhar();}
-  }
-  else if(e.key===" "){
-    while(!colide(tetrisPeca,tetrisBoard,0,1)){tetrisPeca.y++;tetrisPts+=2;}
-    fixar();desenhar();atualizarPlacar();
-  }
+  else if(e.key==="ArrowUp"){const n=girar(tetrisPeca),tmp={...tetrisPeca,shape:n};if(!colide(tmp,tetrisBoard)){tetrisPeca.shape=n;desenhar();}}
+  else if(e.key===" "){while(!colide(tetrisPeca,tetrisBoard,0,1)){tetrisPeca.y++;tetrisPts+=2;}fixar();desenhar();atualizarPlacar();}
 });
+
+// ===== PAINT =====
+const coresPaleta = [
+  "#000000","#808080","#800000","#808000","#008000","#008080","#000080","#800080",
+  "#ffffff","#c0c0c0","#ff0000","#ffff00","#00ff00","#00ffff","#0000ff","#ff00ff",
+  "#ff8040","#804000","#80ff00","#004040","#0080ff","#8000ff","#ff0080","#ff8080",
+  "#ffe0c0","#ffd700","#c8ff00","#40e0d0","#87ceeb","#dda0dd","#ffb6c1","#f5f5dc",
+];
+let paintTool = "lapis";
+let paintCor = "#000000";
+let paintDesenhando = false;
+let paintInicioX = 0, paintInicioY = 0;
+let paintSnapshot = null;
+
+function abrirPaint() {
+  document.getElementById("paintApp").style.display="flex";
+  document.getElementById("paintApp").classList.add("ativo");
+  iniciarPaint();
+}
+function fecharPaint() {
+  document.getElementById("paintApp").style.display="none";
+  document.getElementById("paintApp").classList.remove("ativo");
+}
+function iniciarPaint() {
+  // Paleta
+  const paleta = document.getElementById("paintPaleta");
+  if (paleta.children.length > 0) return;
+  coresPaleta.forEach(cor => {
+    const div = document.createElement("div");
+    div.className = "paint-cor" + (cor===paintCor?" ativa":"");
+    div.style.background = cor;
+    div.onclick = () => {
+      paintCor = cor;
+      document.getElementById("paintCorPreview").style.background = cor;
+      document.querySelectorAll(".paint-cor").forEach(c=>c.classList.remove("ativa"));
+      div.classList.add("ativa");
+    };
+    paleta.appendChild(div);
+  });
+  document.getElementById("paintCorPreview").style.background = paintCor;
+  // Canvas eventos
+  const canvas = document.getElementById("paintCanvas");
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "white"; ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  canvas.onmousedown = (e) => {
+    paintDesenhando = true;
+    const r = canvas.getBoundingClientRect();
+    paintInicioX = e.clientX - r.left;
+    paintInicioY = e.clientY - r.top;
+    paintSnapshot = ctx.getImageData(0,0,canvas.width,canvas.height);
+    if (paintTool === "balde") {
+      floodFill(ctx, Math.floor(paintInicioX), Math.floor(paintInicioY), paintCor);
+      paintDesenhando = false;
+    }
+  };
+  canvas.onmousemove = (e) => {
+    const r = canvas.getBoundingClientRect();
+    const x = e.clientX - r.left, y = e.clientY - r.top;
+    document.getElementById("paintPos").textContent = Math.floor(x) + ", " + Math.floor(y);
+    if (!paintDesenhando) return;
+    const tam = parseInt(document.getElementById("paintTamanho").value);
+    ctx.lineWidth = paintTool==="borracha" ? tam*3 : tam;
+    ctx.lineCap = "round"; ctx.lineJoin = "round";
+    if (paintTool==="lapis"||paintTool==="pincel"||paintTool==="borracha") {
+      ctx.strokeStyle = paintTool==="borracha" ? "white" : paintCor;
+      ctx.beginPath(); ctx.moveTo(paintInicioX,paintInicioY); ctx.lineTo(x,y); ctx.stroke();
+      paintInicioX=x; paintInicioY=y;
+    } else if (paintTool==="linha"||paintTool==="retangulo"||paintTool==="circulo") {
+      ctx.putImageData(paintSnapshot,0,0);
+      ctx.strokeStyle = paintCor; ctx.lineWidth = tam;
+      if (paintTool==="linha") {
+        ctx.beginPath(); ctx.moveTo(paintInicioX,paintInicioY); ctx.lineTo(x,y); ctx.stroke();
+      } else if (paintTool==="retangulo") {
+        ctx.strokeRect(paintInicioX,paintInicioY,x-paintInicioX,y-paintInicioY);
+      } else if (paintTool==="circulo") {
+        ctx.beginPath();
+        ctx.ellipse(paintInicioX+(x-paintInicioX)/2, paintInicioY+(y-paintInicioY)/2,
+          Math.abs(x-paintInicioX)/2, Math.abs(y-paintInicioY)/2, 0, 0, Math.PI*2);
+        ctx.stroke();
+      }
+    }
+  };
+  canvas.onmouseup = () => { paintDesenhando = false; };
+  canvas.onmouseleave = () => { paintDesenhando = false; };
+}
+function setTool(t) {
+  paintTool = t;
+  document.querySelectorAll(".paint-tool-btn").forEach(b=>b.classList.remove("ativo"));
+  const ids = {lapis:"btnLapis",pincel:"btnPincel",borracha:"btnBorracha",balde:"btnBalde",linha:"btnLinha",retangulo:"btnRet",circulo:"btnCirc"};
+  if(ids[t]) document.getElementById(ids[t]).classList.add("ativo");
+  const cursors = {lapis:"crosshair",pincel:"crosshair",borracha:"cell",balde:"crosshair",linha:"crosshair",retangulo:"crosshair",circulo:"crosshair"};
+  document.getElementById("paintCanvas").style.cursor = cursors[t]||"crosshair";
+  document.getElementById("paintStatus").textContent = {lapis:"Lápis",pincel:"Pincel",borracha:"Borracha",balde:"Balde de tinta",linha:"Linha",retangulo:"Retângulo",circulo:"Elipse"}[t]||t;
+}
+function limparCanvas() {
+  const canvas=document.getElementById("paintCanvas"),ctx=canvas.getContext("2d");
+  ctx.fillStyle="white"; ctx.fillRect(0,0,canvas.width,canvas.height);
+}
+function floodFill(ctx, x, y, corNova) {
+  const canvas = ctx.canvas;
+  const imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+  const data = imgData.data;
+  const idx = (y*canvas.width+x)*4;
+  const alvo = [data[idx],data[idx+1],data[idx+2],data[idx+3]];
+  const hex2rgb = h => { const r=parseInt(h.slice(1),16); return [(r>>16)&255,(r>>8)&255,r&255,255]; };
+  const nova = hex2rgb(corNova);
+  if (alvo.every((v,i)=>v===nova[i])) return;
+  const pilha = [[x,y]];
+  const igual = (i) => alvo.every((v,j)=>data[i*4+j]===v);
+  while (pilha.length) {
+    const [cx,cy] = pilha.pop();
+    const i = cy*canvas.width+cx;
+    if (cx<0||cx>=canvas.width||cy<0||cy>=canvas.height||!igual(i)) continue;
+    data[i*4]=nova[0];data[i*4+1]=nova[1];data[i*4+2]=nova[2];data[i*4+3]=nova[3];
+    pilha.push([cx+1,cy],[cx-1,cy],[cx,cy+1],[cx,cy-1]);
+  }
+  ctx.putImageData(imgData,0,0);
+}
 </script>
 </body>
 </html>
